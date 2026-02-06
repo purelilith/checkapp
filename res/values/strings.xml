@@ -1,0 +1,9 @@
+
+    <resources>
+        <string name="button_text_1">E-100   Куркумин</string>
+        <string name="button_text_2">E-101   Рибофламин</string>
+        <string name="button_text_3">Е-102   Тартразин</string>
+        <string name="button_text_4">Е-103   Алканин</string>
+        <string name="button_text_5">Е-104   Желтый х...</string>
+        <string name="button_text_6">Е-105   Желтый п...</string>
+    </resources>
