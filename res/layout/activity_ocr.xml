@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent"
     android:id="@+id/main">
 
@@ -34,13 +35,25 @@
             android:id="@+id/captureImgBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Узнать"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:textSize="25sp"
+            android:background="@drawable/btns_mini"
             android:fontFamily="@font/geologica_auto_medium"
+            android:text="Русский"
+            android:textSize="25sp"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/engCaptureImgBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Английский"
             app:backgroundTint="@null"
-            android:background="@drawable/btns_mini" />
+            android:background="@drawable/btns_mini"
+            android:layout_gravity="center"
+            android:textSize="25dp"
+            android:fontFamily="@font/geologica_auto_medium"
+            android:layout_marginTop="10dp"/>
 
         <TextView
             android:layout_width="wrap_content"
