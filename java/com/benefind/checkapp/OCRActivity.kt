@@ -38,6 +38,7 @@ class OCRActivity : AppCompatActivity() {
     private lateinit var captureImgBtn: Button
     private lateinit var resultText: TextView
 
+    private lateinit var pickImageLauncher: ActivityResultLauncher<String>
     private var currentPhotoPath: String? = null
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
@@ -82,9 +83,31 @@ class OCRActivity : AppCompatActivity() {
             }
         }
 
-        engCaptureImgBtn.setOnClickListener {
-            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+        pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                val inputStream = contentResolver.openInputStream(it)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                inputStream?.close()
+                if (bitmap != null) {
+                    cameraImage.setImageBitmap(bitmap)
+                    recognizeText(bitmap)
+                } else {
+                    Toast.makeText(this, "Не удалось загрузить изображение", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
+        val galleryBtn: Button = findViewById(R.id.engCaptureImgBtn)
+        galleryBtn.setOnClickListener {
+            // Запускаем выбор изображения без дополнительного запроса permission для чтения (для Android 13+ может потребоваться)
+            pickImageLauncher.launch("image/*")
+        }
+
+
+
+        engCaptureImgBtn.setOnClickListener {
+            pickImageLauncher.launch("image/*")
+        }
+
 
         captureImgBtn.setOnClickListener {
             requestPermissionLauncher.launch(Manifest.permission.CAMERA)
@@ -117,6 +140,7 @@ class OCRActivity : AppCompatActivity() {
             Toast.makeText(this, "Ошибка копирования данных tessdata: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
+
 
     private fun createImageFile(): File {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
