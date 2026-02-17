@@ -26,6 +26,8 @@
             android:name=".MainActivity"/>
         <activity
             android:name=".OCRActivity"/>
+        <activity
+            android:name=".ResultActivity"/>
 
         <provider
             android:authorities="${applicationId}.provider"

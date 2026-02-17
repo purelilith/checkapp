@@ -39,7 +39,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/btns_mini"
             android:fontFamily="@font/geologica_auto_medium"
-            android:text="Русский"
+            android:text="Сделать фото"
             android:textSize="25sp"
             app:backgroundTint="@null" />
 
@@ -47,7 +47,7 @@
             android:id="@+id/engCaptureImgBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Английский"
+            android:text="Галерея"
             app:backgroundTint="@null"
             android:background="@drawable/btns_mini"
             android:layout_gravity="center"
@@ -73,6 +73,18 @@
             android:scrollbars="vertical"
             android:text=""
             android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/takeCharBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btns_mini"
+            android:fontFamily="@font/geologica_auto_medium"
+            android:text="Расшифровать состав"
+            android:textSize="25dp"
+            app:backgroundTint="@null" />
 
     </LinearLayout>
 </ScrollView>

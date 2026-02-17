@@ -30,6 +30,7 @@ import android.text.method.ScrollingMovementMethod
 import androidx.core.app.ActivityCompat
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import android.content.Intent
 
 class OCRActivity : AppCompatActivity() {
 
@@ -37,12 +38,11 @@ class OCRActivity : AppCompatActivity() {
     private lateinit var cameraImage: ImageView
     private lateinit var captureImgBtn: Button
     private lateinit var resultText: TextView
-
+    private lateinit var takeCharBtn: Button
     private lateinit var pickImageLauncher: ActivityResultLauncher<String>
     private var currentPhotoPath: String? = null
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
-
     private lateinit var tessBaseAPI: TessBaseAPI
     private val tessDataPath: String by lazy { filesDir.absolutePath + "/" } // Путь к папке с tessdata
 
@@ -55,6 +55,7 @@ class OCRActivity : AppCompatActivity() {
         cameraImage = findViewById(R.id.cameraImage)
         captureImgBtn = findViewById(R.id.captureImgBtn)
         resultText = findViewById(R.id.resultText)
+        takeCharBtn = findViewById(R.id.takeCharBtn)
 
         copyTessDataFiles()
 
@@ -112,6 +113,12 @@ class OCRActivity : AppCompatActivity() {
         captureImgBtn.setOnClickListener {
             requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
+
+
+        takeCharBtn.setOnClickListener {
+        }
+
+
     }
 
     private fun copyTessDataFiles() {
