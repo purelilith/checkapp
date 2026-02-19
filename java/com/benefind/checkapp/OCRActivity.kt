@@ -178,7 +178,7 @@ class OCRActivity : AppCompatActivity() {
         tessBaseAPI.setImage(bitmap)
         val recognizedText = tessBaseAPI.utF8Text
         resultText.text = recognizedText
-        recognizedAdditives += recognizedText
+        recognizedAdditives = recognizedText
     }
 
     override fun onDestroy() {
