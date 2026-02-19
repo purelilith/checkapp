@@ -15,12 +15,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val list = mutableListOf(
-        Additive("E-100", "Куркумин"),
-        Additive("E-101", "Рибофлавин"),
-        Additive("E-102", "Тартразин"),
-        Additive("E-103", "Алканин"),
-        Additive("E-104", "Желтый хеналиновый"),
-        Additive("E-105", "Желтый прочный")
+        Additive("E100", "Куркумин"),
+        Additive("E101", "Рибофлавин"),
+        Additive("E102", "Тартразин"),
+        Additive("E103", "Алканин"),
+        Additive("E104", "Желтый хеналиновый"),
+        Additive("E105", "Желтый прочный")
     )
     private val adapter = AdditiveAdapter(list.toMutableList())
     override fun onCreate(savedInstanceState: Bundle?) {

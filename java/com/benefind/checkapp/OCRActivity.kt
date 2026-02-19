@@ -35,6 +35,7 @@ import android.content.Intent
 class OCRActivity : AppCompatActivity() {
 
     private lateinit var engCaptureImgBtn: Button
+    var recognizedAdditives = ""
     private lateinit var cameraImage: ImageView
     private lateinit var captureImgBtn: Button
     private lateinit var resultText: TextView
@@ -116,6 +117,9 @@ class OCRActivity : AppCompatActivity() {
 
 
         takeCharBtn.setOnClickListener {
+            val intent = Intent(this, ResultActivity::class.java)
+            intent.putExtra("recognizedText", recognizedAdditives)  // Передаём строку
+            startActivity(intent)
         }
 
 
@@ -174,6 +178,7 @@ class OCRActivity : AppCompatActivity() {
         tessBaseAPI.setImage(bitmap)
         val recognizedText = tessBaseAPI.utF8Text
         resultText.text = recognizedText
+        recognizedAdditives += recognizedText
     }
 
     override fun onDestroy() {
@@ -181,3 +186,4 @@ class OCRActivity : AppCompatActivity() {
         tessBaseAPI.end()
     }
 }
+
