@@ -9,18 +9,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.benefind.checkapp.databinding.ActivityMainBinding
 
-data class Additive(val code: String, val name: String)
+data class Additive(val code: String, val name: String, val legality: String)
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val list = mutableListOf(
-        Additive("E100", "Куркумин"),
-        Additive("E101", "Рибофлавин"),
-        Additive("E102", "Тартразин"),
-        Additive("E103", "Алканин"),
-        Additive("E104", "Желтый хеналиновый"),
-        Additive("E105", "Желтый прочный")
+        Additive("E100", "Куркумин", "Разрешен"),
+        Additive("E101", "Рибофлавин", "Разрешен"),
+        Additive("E102", "Тартразин", "Запрещен"),
+        Additive("E103", "Алканин", "Запрещен"),
+        Additive("E104", "Желтый хеналиновый", "Запрещен"),
+        Additive("E105", "Желтый прочный", "Запрещен")
     )
     private val adapter = AdditiveAdapter(list.toMutableList())
     override fun onCreate(savedInstanceState: Bundle?) {

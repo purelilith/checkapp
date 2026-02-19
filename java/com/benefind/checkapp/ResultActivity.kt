@@ -24,11 +24,12 @@ class ResultActivity: AppCompatActivity() {
 
         val matchedNames = DataProvider.res_list.filter { additive ->
             wordList.contains(additive.code)
-        }.map { it.name }
+        }.map { additive ->
+            "${additive.name} (${additive.code}) - ${additive.legality}" }
 
         // Вывод названий добавок через запятую
         textView.text = if (matchedNames.isNotEmpty()) {
-            matchedNames.joinToString(separator = ", ")
+            matchedNames.joinToString(separator = "; ")
         } else {
             "Совпадений нет"
         }
