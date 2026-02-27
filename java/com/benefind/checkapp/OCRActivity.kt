@@ -1,5 +1,6 @@
 package com.benefind.checkapp
 import android.Manifest
+import kotlinx.coroutines.*
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -21,16 +22,19 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.content.pm.PackageManager
 import java.util.Locale
-
 import org.w3c.dom.Text
 import java.util.Date
 import com.google.mlkit.vision.text.TextRecognition
-
 import android.text.method.ScrollingMovementMethod
 import androidx.core.app.ActivityCompat
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import android.content.Intent
+import android.graphics.Canvas
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
+import android.graphics.Paint
+import androidx.lifecycle.lifecycleScope
 
 class OCRActivity : AppCompatActivity() {
 
@@ -48,7 +52,7 @@ class OCRActivity : AppCompatActivity() {
     private val tessDataPath: String by lazy { filesDir.absolutePath + "/" } // Путь к папке с tessdata
 
 
-    override fun onCreate(savedInstanceState: Bundle?){
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ocr)
 
@@ -67,37 +71,53 @@ class OCRActivity : AppCompatActivity() {
             finish()
         }
 
-        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                captureImage()
-            } else {
-                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) {
+                    captureImage()
+                } else {
+                    Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+                }
             }
-        }
 
         takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success) {
                 currentPhotoPath?.let { path ->
-                    val bitmap = BitmapFactory.decodeFile(path)
-                    cameraImage.setImageBitmap(bitmap)
-                    recognizeText(bitmap)
+                    lifecycleScope.launch {
+                        val originalBitmap = BitmapFactory.decodeFile(path)
+                        if (originalBitmap != null) {
+                            val preparedBitmap = prepareBitmap(originalBitmap)
+                            cameraImage.setImageBitmap(preparedBitmap)
+                            withContext(Dispatchers.Default) {
+                                recognizeText(preparedBitmap)
+                            }
+                        }
+                    }
                 }
             }
         }
 
+
         pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
-                val inputStream = contentResolver.openInputStream(it)
-                val bitmap = BitmapFactory.decodeStream(inputStream)
-                inputStream?.close()
-                if (bitmap != null) {
-                    cameraImage.setImageBitmap(bitmap)
-                    recognizeText(bitmap)
-                } else {
-                    Toast.makeText(this, "Не удалось загрузить изображение", Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch {
+                    val inputStream = contentResolver.openInputStream(it)
+                    val originalBitmap = BitmapFactory.decodeStream(inputStream)
+                    inputStream?.close()
+                    if (originalBitmap != null) {
+                        val preparedBitmap = prepareBitmap(originalBitmap)
+                        cameraImage.setImageBitmap(preparedBitmap) // на ui потоке
+
+                        withContext(Dispatchers.Default) {
+                            recognizeText(preparedBitmap)
+                        }
+                    } else {
+                        Toast.makeText(this@OCRActivity, "Не удалось загрузить изображение", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
+
         val galleryBtn: Button = findViewById(R.id.engCaptureImgBtn)
         galleryBtn.setOnClickListener {
             // Запускаем выбор изображения без дополнительного запроса permission для чтения (для Android 13+ может потребоваться)
@@ -148,13 +168,18 @@ class OCRActivity : AppCompatActivity() {
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            Toast.makeText(this, "Ошибка копирования данных tessdata: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                "Ошибка копирования данных tessdata: ${e.message}",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
 
     private fun createImageFile(): File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val timeStamp: String =
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir).apply {
             currentPhotoPath = absolutePath
@@ -174,16 +199,47 @@ class OCRActivity : AppCompatActivity() {
         }
     }
 
-    private fun recognizeText(bitmap: Bitmap) {
-        tessBaseAPI.setImage(bitmap)
-        val recognizedText = tessBaseAPI.utF8Text
+
+    private suspend fun recognizeText(bitmap: Bitmap) {
+        val recognizedText = withContext(Dispatchers.Default) {
+            tessBaseAPI.setImage(bitmap)
+            tessBaseAPI.utF8Text
+        }
+        // обновление ui на главном потоке (уже в launch/coroutineScope)
         resultText.text = recognizedText
         recognizedAdditives = recognizedText
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
         tessBaseAPI.end()
     }
-}
 
+    private suspend fun prepareBitmap(bitmap: Bitmap): Bitmap = withContext(Dispatchers.Default) {
+        // масштабируем
+        val maxWidth = 1024
+        val scale = if (bitmap.width > maxWidth) maxWidth * 1f / bitmap.width else 1f
+        val newWidth = (bitmap.width * scale).toInt()
+        val newHeight = (bitmap.height * scale).toInt()
+
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
+
+        // повышаем контрастность
+        val cm = ColorMatrix()
+        cm.set(floatArrayOf(
+            2f, 0f, 0f, 0f, -100f,
+            0f, 2f, 0f, 0f, -100f,
+            0f, 0f, 2f, 0f, -100f,
+            0f, 0f, 0f, 1f, 0f
+        ))
+        val paint = Paint()
+        paint.colorFilter = ColorMatrixColorFilter(cm)
+
+        val contrastedBitmap = Bitmap.createBitmap(scaledBitmap.width, scaledBitmap.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(contrastedBitmap)
+        canvas.drawBitmap(scaledBitmap, 0f, 0f, paint)
+
+        contrastedBitmap
+    }
+}
