@@ -34,6 +34,8 @@ import android.graphics.Canvas
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
+import android.view.View
+import android.widget.ProgressBar
 import androidx.lifecycle.lifecycleScope
 
 class OCRActivity : AppCompatActivity() {
@@ -43,6 +45,7 @@ class OCRActivity : AppCompatActivity() {
     private lateinit var cameraImage: ImageView
     private lateinit var captureImgBtn: Button
     private lateinit var resultText: TextView
+    private lateinit var progressBar: ProgressBar
     private lateinit var takeCharBtn: Button
     private lateinit var pickImageLauncher: ActivityResultLauncher<String>
     private var currentPhotoPath: String? = null
@@ -56,12 +59,14 @@ class OCRActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ocr)
 
+        progressBar = findViewById(R.id.progressBar)
         engCaptureImgBtn = findViewById(R.id.engCaptureImgBtn)
         cameraImage = findViewById(R.id.cameraImage)
         captureImgBtn = findViewById(R.id.captureImgBtn)
         resultText = findViewById(R.id.resultText)
         takeCharBtn = findViewById(R.id.takeCharBtn)
 
+        progressBar.visibility = View.GONE
         copyTessDataFiles()
 
         tessBaseAPI = TessBaseAPI()
@@ -88,14 +93,24 @@ class OCRActivity : AppCompatActivity() {
                         if (originalBitmap != null) {
                             val preparedBitmap = prepareBitmap(originalBitmap)
                             cameraImage.setImageBitmap(preparedBitmap)
+
+
+                            progressBar.visibility = View.VISIBLE
+                            resultText.isEnabled = false
+
                             withContext(Dispatchers.Default) {
                                 recognizeText(preparedBitmap)
                             }
+
+
+                            progressBar.visibility = View.GONE
+                            resultText.isEnabled = true
                         }
                     }
                 }
             }
         }
+
 
 
         pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -106,11 +121,17 @@ class OCRActivity : AppCompatActivity() {
                     inputStream?.close()
                     if (originalBitmap != null) {
                         val preparedBitmap = prepareBitmap(originalBitmap)
-                        cameraImage.setImageBitmap(preparedBitmap) // на ui потоке
+                        cameraImage.setImageBitmap(preparedBitmap)
+
+                        progressBar.visibility = View.VISIBLE
+                        resultText.isEnabled = false
 
                         withContext(Dispatchers.Default) {
                             recognizeText(preparedBitmap)
                         }
+
+                        progressBar.visibility = View.GONE
+                        resultText.isEnabled = true
                     } else {
                         Toast.makeText(this@OCRActivity, "Не удалось загрузить изображение", Toast.LENGTH_SHORT).show()
                     }
@@ -205,11 +226,11 @@ class OCRActivity : AppCompatActivity() {
             tessBaseAPI.setImage(bitmap)
             tessBaseAPI.utF8Text
         }
-        // обновление ui на главном потоке (уже в launch/coroutineScope)
-        resultText.text = recognizedText
-        recognizedAdditives = recognizedText
+        withContext(Dispatchers.Main) {
+            resultText.text = recognizedText
+            recognizedAdditives = recognizedText
+        }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
