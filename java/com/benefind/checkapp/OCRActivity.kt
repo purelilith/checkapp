@@ -49,6 +49,7 @@ class OCRActivity : AppCompatActivity() {
     private lateinit var takeCharBtn: Button
     private lateinit var pickImageLauncher: ActivityResultLauncher<String>
     private var currentPhotoPath: String? = null
+    private lateinit var backButtonOCR: ImageView
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
     private lateinit var tessBaseAPI: TessBaseAPI
@@ -59,6 +60,7 @@ class OCRActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ocr)
 
+        backButtonOCR = findViewById(R.id.backButtonOCR)
         progressBar = findViewById(R.id.progressBar)
         engCaptureImgBtn = findViewById(R.id.engCaptureImgBtn)
         cameraImage = findViewById(R.id.cameraImage)
@@ -70,7 +72,6 @@ class OCRActivity : AppCompatActivity() {
         copyTessDataFiles()
 
         tessBaseAPI = TessBaseAPI()
-// Инициализируем Tesseract с русским языком (rus)
         if (!tessBaseAPI.init(tessDataPath, "rus")) {
             Toast.makeText(this, "Tesseract init failed", Toast.LENGTH_SHORT).show()
             finish()
@@ -141,11 +142,13 @@ class OCRActivity : AppCompatActivity() {
 
         val galleryBtn: Button = findViewById(R.id.engCaptureImgBtn)
         galleryBtn.setOnClickListener {
-            // Запускаем выбор изображения без дополнительного запроса permission для чтения (для Android 13+ может потребоваться)
             pickImageLauncher.launch("image/*")
         }
 
 
+        backButtonOCR.setOnClickListener {
+            finish()
+        }
 
         engCaptureImgBtn.setOnClickListener {
             pickImageLauncher.launch("image/*")
@@ -159,7 +162,7 @@ class OCRActivity : AppCompatActivity() {
 
         takeCharBtn.setOnClickListener {
             val intent = Intent(this, ResultActivity::class.java)
-            intent.putExtra("recognizedText", recognizedAdditives)  // Передаём строку
+            intent.putExtra("recognizedText", recognizedAdditives)
             startActivity(intent)
         }
 
@@ -238,7 +241,7 @@ class OCRActivity : AppCompatActivity() {
     }
 
     private suspend fun prepareBitmap(bitmap: Bitmap): Bitmap = withContext(Dispatchers.Default) {
-        // масштабируем
+        // масштабирование
         val maxWidth = 1024
         val scale = if (bitmap.width > maxWidth) maxWidth * 1f / bitmap.width else 1f
         val newWidth = (bitmap.width * scale).toInt()
@@ -246,7 +249,7 @@ class OCRActivity : AppCompatActivity() {
 
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
 
-        // повышаем контрастность
+        // повышение контрастности
         val cm = ColorMatrix()
         cm.set(floatArrayOf(
             2f, 0f, 0f, 0f, -100f,

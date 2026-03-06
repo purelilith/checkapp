@@ -14,20 +14,20 @@ class ResultActivity: AppCompatActivity() {
         val receivedText = intent.getStringExtra("recognizedText") ?: ""
 
         val cleanedText = receivedText
-            .uppercase()                                   // приводим к нижнему регистру (по желанию)
-            .replace(Regex("[^\\w\\s]"), "")              // убираем всё кроме букв, цифр, пробелов и дефисов
+            .uppercase()
+            .replace(Regex("[^\\w\\s]"), "")
             .trim()
 
         val wordList = cleanedText
-            .split(Regex("\\s+"))                          // разбиваем по пробелам
-            .filter { it.isNotEmpty() }                    // удаляем пустые элементы
+            .split(Regex("\\s+"))
+            .filter { it.isNotEmpty() }
 
         val matchedNames = DataProvider.res_list.filter { additive ->
             wordList.contains(additive.code)
         }.map { additive ->
             "${additive.name} (${additive.code}) - ${additive.legality}" }
 
-        // Вывод названий добавок через запятую
+        // вывод названий добавок через запятую
         textView.text = if (matchedNames.isNotEmpty()) {
             matchedNames.joinToString(separator = "; ")
         } else {

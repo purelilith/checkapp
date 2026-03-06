@@ -25,7 +25,6 @@ class AdditiveAdapter(private var items: MutableList<Additive>) : RecyclerView.A
         holder.binding.codeTextView.text = additive.code
         holder.binding.nameTextView.text = additive.name
 
-        // Зеленым – E-100 и E-101, красным – остальные
         val color = when (additive.code) {
             "E100", "E101" -> Color.parseColor("#3fb500")
             else -> Color.parseColor("#d42c2c")
