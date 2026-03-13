@@ -5,12 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="22dp"
-    android:background="#BB3556">
+    android:background="#EAEAEA">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="75dp"
-        android:background="@drawable/blocks_search_style"
+        android:background="@drawable/blocks_btns_style"
         android:padding="10dp"
         android:layout_marginBottom="8dp"
         android:clipToPadding="false"
