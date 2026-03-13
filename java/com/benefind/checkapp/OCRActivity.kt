@@ -73,6 +73,7 @@ class OCRActivity : AppCompatActivity() {
 
         tessBaseAPI = TessBaseAPI()
         if (!tessBaseAPI.init(tessDataPath, "rus")) {
+            tessBaseAPI.pageSegMode=6
             Toast.makeText(this, "Tesseract init failed", Toast.LENGTH_SHORT).show()
             finish()
         }
@@ -225,13 +226,18 @@ class OCRActivity : AppCompatActivity() {
 
 
     private suspend fun recognizeText(bitmap: Bitmap) {
-        val recognizedText = withContext(Dispatchers.Default) {
+        withContext(Dispatchers.Default) {
+            tessBaseAPI.pageSegMode = 6
             tessBaseAPI.setImage(bitmap)
-            tessBaseAPI.utF8Text
-        }
-        withContext(Dispatchers.Main) {
-            resultText.text = recognizedText
-            recognizedAdditives = recognizedText
+
+            val rawText = tessBaseAPI.utF8Text ?: ""
+            var cleanText = rawText.replace(Regex("[^a-zA-Zа-яА-ЯёЁ0-9 ]"), " ")
+            cleanText = cleanText.replace(Regex("\\s+"), " ").trim()
+
+            withContext(Dispatchers.Main) {
+                resultText.text = cleanText
+                recognizedAdditives = cleanText
+            }
         }
     }
 
@@ -241,29 +247,36 @@ class OCRActivity : AppCompatActivity() {
     }
 
     private suspend fun prepareBitmap(bitmap: Bitmap): Bitmap = withContext(Dispatchers.Default) {
-        // масштабирование
-        val maxWidth = 1024
-        val scale = if (bitmap.width > maxWidth) maxWidth * 1f / bitmap.width else 1f
+        val maxWidth = 1500f
+        val scale = if (bitmap.width > maxWidth) maxWidth / bitmap.width else 1f
         val newWidth = (bitmap.width * scale).toInt()
         val newHeight = (bitmap.height * scale).toInt()
 
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
-
-        // повышение контрастности
         val cm = ColorMatrix()
-        cm.set(floatArrayOf(
-            2f, 0f, 0f, 0f, -100f,
-            0f, 2f, 0f, 0f, -100f,
-            0f, 0f, 2f, 0f, -100f,
+        cm.setSaturation(0f)
+        val contrast = 30f
+        val offset = -140f * contrast + 128f
+        val matrix = floatArrayOf(
+            contrast, 0f, 0f, 0f, offset,
+            0f, contrast, 0f, 0f, offset,
+            0f, 0f, contrast, 0f, offset,
             0f, 0f, 0f, 1f, 0f
-        ))
-        val paint = Paint()
-        paint.colorFilter = ColorMatrixColorFilter(cm)
+        )
+        cm.postConcat(ColorMatrix(matrix))
+        val resultBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(resultBitmap)
+        val paint = Paint().apply {
+            colorFilter = ColorMatrixColorFilter(cm)
+            isAntiAlias = true
+            isFilterBitmap = true
+        }
 
-        val contrastedBitmap = Bitmap.createBitmap(scaledBitmap.width, scaledBitmap.height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(contrastedBitmap)
         canvas.drawBitmap(scaledBitmap, 0f, 0f, paint)
+        if (scaledBitmap != resultBitmap) {
+            scaledBitmap.recycle()
+        }
 
-        contrastedBitmap
+        resultBitmap
     }
 }
