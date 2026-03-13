@@ -24,11 +24,8 @@ import android.content.pm.PackageManager
 import java.util.Locale
 import org.w3c.dom.Text
 import java.util.Date
-import com.google.mlkit.vision.text.TextRecognition
 import android.text.method.ScrollingMovementMethod
 import androidx.core.app.ActivityCompat
-import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.ColorMatrix
@@ -73,7 +70,6 @@ class OCRActivity : AppCompatActivity() {
 
         tessBaseAPI = TessBaseAPI()
         if (!tessBaseAPI.init(tessDataPath, "rus")) {
-            tessBaseAPI.pageSegMode=6
             Toast.makeText(this, "Tesseract init failed", Toast.LENGTH_SHORT).show()
             finish()
         }
@@ -227,7 +223,6 @@ class OCRActivity : AppCompatActivity() {
 
     private suspend fun recognizeText(bitmap: Bitmap) {
         withContext(Dispatchers.Default) {
-            tessBaseAPI.pageSegMode = 6
             tessBaseAPI.setImage(bitmap)
 
             val rawText = tessBaseAPI.utF8Text ?: ""
