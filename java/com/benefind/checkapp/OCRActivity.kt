@@ -99,8 +99,6 @@ class OCRActivity : AppCompatActivity() {
                             withContext(Dispatchers.Default) {
                                 recognizeText(preparedBitmap)
                             }
-
-
                             progressBar.visibility = View.GONE
                             resultText.isEnabled = true
                         }
@@ -224,7 +222,6 @@ class OCRActivity : AppCompatActivity() {
     private suspend fun recognizeText(bitmap: Bitmap) {
         withContext(Dispatchers.Default) {
             tessBaseAPI.setImage(bitmap)
-
             val rawText = tessBaseAPI.utF8Text ?: ""
             var cleanText = rawText.replace(Regex("[^a-zA-Zа-яА-ЯёЁ0-9 ]"), " ")
             cleanText = cleanText.replace(Regex("\\s+"), " ").trim()

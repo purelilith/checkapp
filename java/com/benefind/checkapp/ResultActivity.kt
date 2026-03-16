@@ -4,15 +4,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import android.widget.Button
+import android.widget.ImageButton
 
 class ResultActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
-        val backButton = findViewById<Button>(R.id.backButton)
+        val backButton = findViewById<ImageButton>(R.id.backButton)
         val textView = findViewById<TextView>(R.id.resultTextView)
         val receivedText = intent.getStringExtra("recognizedText") ?: ""
-
         val cleanedText = receivedText
             .uppercase()
             .replace(Regex("[^\\w\\s]"), "")

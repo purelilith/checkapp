@@ -17,81 +17,80 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FFF4D4"
+            android:background="#FFFFFF"
             android:padding="25dp"
             android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/backButtonOCR"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#FFF4D4"
-                android:src="@drawable/ic_back_round">
-            </ImageButton>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/btns_orange"
-                android:layout_gravity="center">
+                android:orientation="horizontal"
+                android:paddingTop="25dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="21dp">
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:textColor="#FFF4D4"
-                    android:fontFamily="@font/findsans_pro"
-                    android:gravity="center"
-                    android:text="Сфотографируйте \nсостав"
-                    android:textSize="26sp"
+                <ImageButton
+                    android:id="@+id/backButtonOCR"
+                    android:layout_width="70dp"
+                    android:contentDescription="Back"
+                    android:layout_height="70dp"
+                    android:background="@drawable/ic_back_btn"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+                </ImageButton>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/geologica_auto_medium"
+                android:text="Сфотографируй состав"
+                android:textColor="#000000"
+                android:paddingBottom="12dp"
+                android:textSize="40sp">
+            </TextView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/engCaptureImgBtn"
+                    android:layout_width="167dp"
+                    android:layout_height="184dp"
+                    android:background="@drawable/btn_gallery"
+                    app:backgroundTint="@null"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                </Button>
+
+                <Button
+                    android:id="@+id/captureImgBtn"
+                    android:layout_width="167dp"
+                    android:layout_height="184dp"
+                    android:background="@drawable/btn_photo"
+                    app:backgroundTint="@null"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+                </Button>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             <ImageView
                 android:id="@+id/cameraImage"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="250dp"
+                android:layout_height="151dp"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
-                android:background="@drawable/ic_camera"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:background="@drawable/block_green"
-            android:orientation="vertical">
-            <Button
-                android:textColor="#105C08"
-                android:id="@+id/captureImgBtn"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/btns_mini"
-                android:fontFamily="@font/geologica_auto_medium"
-                android:text="Сделать фото"
-                android:textSize="25sp"
-                app:backgroundTint="@null" />
-
-            <Button
-                android:textColor="#105C08"
-                android:id="@+id/engCaptureImgBtn"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:text="Галерея"
-                app:backgroundTint="@null"
-                android:background="@drawable/btns_mini"
-                android:layout_gravity="center"
-                android:textSize="25sp"
-                android:fontFamily="@font/geologica_auto_medium"
-                android:layout_marginTop="15dp"/>
-        </LinearLayout>
+                android:background="@drawable/pic_photo"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -123,14 +122,14 @@
 
             <Button
                 android:id="@+id/takeCharBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#105C08"
+                android:layout_width="match_parent"
+                android:layout_height="63dp"
+                android:textColor="#FFFFFF"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/btns_mini"
+                android:background="@drawable/btns_blue"
                 android:fontFamily="@font/geologica_auto_medium"
-                android:text="Расшифровать состав"
+                android:text="Узнать результат"
                 android:textSize="25sp"
                 app:backgroundTint="@null" />
 
