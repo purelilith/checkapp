@@ -1,147 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="25dp"
-    android:background="#FFFFFF">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="25dp"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:paddingBottom="21dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="25dp"
+        android:background="#FFFFFF">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="25dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="21dp">
 
-        <ImageButton
-            android:id="@+id/backButtonSecond"
-            android:layout_width="70dp"
-            android:contentDescription="Back"
-            android:layout_height="70dp"
-            android:background="@drawable/ic_back_btn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-        </ImageButton>
+            <ImageButton
+                android:id="@+id/backButtonSecond"
+                android:layout_width="70dp"
+                android:contentDescription="Back"
+                android:layout_height="70dp"
+                android:background="@drawable/ic_back_btn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+            </ImageButton>
 
-        <ImageButton
-            android:id="@+id/moreBtnSecond"
-            android:layout_width="70dp"
-            android:contentDescription="More"
-            android:layout_height="70dp"
-            android:background="@drawable/ic_more_btn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-        </ImageButton>
+            <ImageButton
+                android:id="@+id/moreBtnSecond"
+                android:layout_width="70dp"
+                android:contentDescription="More"
+                android:layout_height="70dp"
+                android:background="@drawable/ic_more_btn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+            </ImageButton>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:fontFamily="@font/geologica_auto_medium"
-        android:text="Проверь состав"
-        android:textColor="#000000"
-        android:paddingBottom="12dp"
-        android:textSize="40sp">
-    </TextView>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="310dp"
-        android:layout_height="60dp"
-        android:background="@drawable/block_search_menu"
-        android:padding="10dp">
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/btn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/geologica_regular"
-            android:text="Выбери удобный способ"
-            android:textColor="#515151"
-            android:textColorHint="#404040"
-            android:textSize="22sp"
-            app:backgroundTint="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/geologica_auto_medium"
+            android:text="Проверь состав"
+            android:textColor="#000000"
+            android:paddingBottom="12dp"
+            android:textSize="40sp">
         </TextView>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/btns_orange"
-        android:orientation="vertical">
-
-        <ImageButton
-            android:id="@+id/buttonToOCR"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:background="@drawable/ic_camera"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="310dp"
+            android:layout_height="60dp"
+            android:background="@drawable/block_search_menu"
+            android:padding="10dp">
 
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/geologica_regular"
+                android:text="Выбери удобный способ"
+                android:textColor="#515151"
+                android:textColorHint="#404040"
+                android:textSize="22sp"
+                app:backgroundTint="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+            </TextView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="23sp"
-            android:textColor="#FFFFFF"
-            android:text="Сделать фото"
-            android:fontFamily="@font/geologica_semibold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/buttonToOCR"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:padding="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/btns_orange"
+            android:orientation="vertical">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:padding="20dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/btns_green"
-        android:orientation="vertical">
+            <ImageButton
+                android:id="@+id/buttonToOCR"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:background="@drawable/ic_camera"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        <ImageButton
-            android:id="@+id/buttonToMain"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:background="@drawable/ic_loop_green"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/geologica_semibold"
+                android:text="Сделать фото"
+                android:layout_marginStart="16dp"
+                android:textColor="#FFFFFF"
+                android:textSize="23sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/textView6"
+                app:layout_constraintStart_toEndOf="@+id/buttonToOCR"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/geologica_regular"
+                android:text="Сделай фото состава или выбери из галереи"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonToOCR"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="23sp"
-            android:textColor="#FFFFFF"
-            android:text="Найти вручную"
-            android:fontFamily="@font/geologica_semibold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/buttonToMain"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:padding="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/btns_mini"
+            android:orientation="vertical">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+            <ImageButton
+                android:id="@+id/buttonToHand"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:background="@drawable/ic_list"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/geologica_semibold"
+                android:text="Ввести состав"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="16dp"
+                android:textSize="23sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonToHand"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/geologica_regular"
+                android:text="Введи все ингредиенты состава вручную"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="16dp"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonToHand"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btns_green"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <ImageButton
+                android:id="@+id/buttonToMain"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:background="@drawable/ic_loop_green"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/geologica_semibold"
+                android:text="Найти вручную"
+                android:textColor="#FFFFFF"
+                android:textSize="23sp"
+                android:layout_marginTop="15dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonToMain"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/geologica_regular"
+                android:text="Найди конкретный ингредиент"
+                android:layout_marginBottom="15dp"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="16dp"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonToMain"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>
