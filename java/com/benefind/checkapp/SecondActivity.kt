@@ -12,12 +12,17 @@ class SecondActivity : AppCompatActivity() {
         setContentView(R.layout.activity_second)
         val button_to_main = findViewById<ImageButton>(R.id.buttonToMain)
         val button_to_OCR = findViewById< ImageButton>(R.id.buttonToOCR)
+        val button_to_hand = findViewById<ImageButton>(R.id.buttonToHand)
         button_to_main.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
         button_to_OCR.setOnClickListener {
             val intent = Intent(this, OCRActivity::class.java)
+            startActivity(intent)
+        }
+        button_to_hand.setOnClickListener {
+            val intent = Intent(this, ManualInputActivity::class.java)
             startActivity(intent)
         }
 

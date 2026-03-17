@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#EAEAEA"
+    android:orientation="vertical"
+    android:padding="22dp"
+    tools:ignore="NamespaceTypo">
+
+<ImageButton
+    android:id="@+id/backButton"
+    android:layout_width="70dp"
+    android:layout_height="70dp"
+    android:background="@drawable/ic_back_btn"
+    android:contentDescription="Назад" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:fontFamily="@font/geologica_auto_medium"
+    android:text="Введите состав продукта:"
+    android:textColor="#000000"
+    android:textSize="20sp"
+    android:textStyle="bold" />
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_marginTop="15dp"
+    android:layout_weight="1"
+    android:background="@drawable/blocks_btns_style"
+    android:padding="10dp">
+
+    <EditText
+        android:id="@+id/compositionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/geologica_auto_medium"
+        android:gravity="top"
+        android:hint="Например: сахар, мука, Е102, лимонная кислота..."
+        android:padding="10dp"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+<Button
+    android:id="@+id/analyzeButton"
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:layout_marginTop="20dp"
+    android:backgroundTint="#3fb500"
+    android:fontFamily="@font/geologica_auto_medium"
+    android:text="Проверить состав"
+    android:textAllCaps="false"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    app:cornerRadius="15dp" />
+
+</LinearLayout>
