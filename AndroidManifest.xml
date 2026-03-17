@@ -28,6 +28,7 @@
             android:name=".OCRActivity"/>
         <activity
             android:name=".ResultActivity"/>
+        <activity android:name=".AdditiveDetailActivity" android:exported="false" />
 
         <provider
             android:authorities="${applicationId}.provider"

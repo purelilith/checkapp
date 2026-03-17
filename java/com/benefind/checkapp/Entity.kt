@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class Additive(
     @PrimaryKey val code: String,
     val name: String,
-    val legality: String
-)
+    val legality: String,
+    val description: String
+) : java.io.Serializable

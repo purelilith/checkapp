@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString()
                 lifecycleScope.launch {
-                    // Ищем в базе данных по коду или названию
                     val filtered = if (query.isEmpty()) {
                         db.additiveDao().getAll()
                     } else {
