@@ -5,13 +5,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
-class ResultActivity: AppCompatActivity() {
+class ResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
+
         val backButton = findViewById<ImageButton>(R.id.backButton)
         val textView = findViewById<TextView>(R.id.resultTextView)
+
         val receivedText = intent.getStringExtra("recognizedText") ?: ""
         val cleanedText = receivedText
             .uppercase()
@@ -22,21 +26,23 @@ class ResultActivity: AppCompatActivity() {
             .split(Regex("\\s+"))
             .filter { it.isNotEmpty() }
 
-        val matchedNames = DataProvider.res_list.filter { additive ->
-            wordList.contains(additive.code)
-        }.map { additive ->
-            "${additive.name} (${additive.code}) - ${additive.legality}" }
+        val db = AppDatabase.getDatabase(this)
+        lifecycleScope.launch {
+            val matchedAdditives = db.additiveDao().getByCodes(wordList)
 
-        // вывод названий добавок через запятую
-        textView.text = if (matchedNames.isNotEmpty()) {
-            matchedNames.joinToString(separator = "; ")
-        } else {
-            "Совпадений нет"
+            val resultString = if (matchedAdditives.isNotEmpty()) {
+                matchedAdditives.joinToString(separator = "; ") { additive ->
+                    "${additive.name} (${additive.code}) - ${additive.legality}"
+                }
+            } else {
+                "Совпадений нет"
+            }
+
+            textView.text = resultString
         }
 
         backButton.setOnClickListener {
             finish()
         }
-
     }
 }
