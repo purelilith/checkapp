@@ -9,22 +9,34 @@
     android:padding="22dp"
     tools:ignore="NamespaceTypo">
 
-<ImageButton
-    android:id="@+id/backButton"
-    android:layout_width="70dp"
-    android:layout_height="70dp"
-    android:background="@drawable/ic_back_btn"
-    android:contentDescription="Назад" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="25dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="21dp">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="70dp"
+            android:contentDescription="Back"
+            android:layout_height="70dp"
+            android:background="@drawable/ic_back_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+        </ImageButton>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
     android:fontFamily="@font/geologica_auto_medium"
-    android:text="Введите состав продукта:"
+    android:text="Введи состав продукта:"
     android:textColor="#000000"
-    android:textSize="20sp"
-    android:textStyle="bold" />
+    android:textSize="40sp" />
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -52,12 +64,11 @@
     android:layout_width="match_parent"
     android:layout_height="65dp"
     android:layout_marginTop="20dp"
-    android:backgroundTint="#3fb500"
+    android:textColor="@color/white"
+    android:background="@drawable/btns_green"
     android:fontFamily="@font/geologica_auto_medium"
     android:text="Проверить состав"
-    android:textAllCaps="false"
-    android:textSize="18sp"
-    android:textStyle="bold"
-    app:cornerRadius="15dp" />
+    android:textSize="23sp"
+    app:backgroundTint="@null"/>
 
 </LinearLayout>

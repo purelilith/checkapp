@@ -9,11 +9,9 @@
     android:padding="0dp">
     <ScrollView
         android:layout_width="match_parent"
-        android:background="@color/white"
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:id="@+id/main">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -21,118 +19,138 @@
             android:padding="25dp"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="25dp"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
-                android:paddingBottom="21dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="25dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="21dp">
 
-                <ImageButton
-                    android:id="@+id/backButtonOCR"
-                    android:layout_width="70dp"
-                    android:contentDescription="Back"
-                    android:layout_height="70dp"
-                    android:background="@drawable/ic_back_btn"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
-                </ImageButton>
+        <ImageButton
+            android:id="@+id/backButtonOCR"
+            android:layout_width="70dp"
+            android:contentDescription="Back"
+            android:layout_height="70dp"
+            android:background="@drawable/ic_back_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+        </ImageButton>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/geologica_auto_medium"
-                android:text="Сфотографируй состав"
-                android:textColor="#000000"
-                android:paddingBottom="12dp"
-                android:textSize="40sp">
-            </TextView>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/engCaptureImgBtn"
-                    android:layout_width="167dp"
-                    android:layout_height="184dp"
-                    android:background="@drawable/btn_gallery"
-                    app:backgroundTint="@null"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-                </Button>
-
-                <Button
-                    android:id="@+id/captureImgBtn"
-                    android:layout_width="167dp"
-                    android:layout_height="184dp"
-                    android:background="@drawable/btn_photo"
-                    app:backgroundTint="@null"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-                </Button>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="@font/geologica_auto_medium"
+        android:text="Сфотографируй состав"
+        android:textColor="#000000"
+        android:textSize="40sp"/>
 
 
-            <ImageView
-                android:id="@+id/cameraImage"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:layout_width="250dp"
-                android:layout_height="151dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:background="@drawable/pic_photo"/>
+        <ImageView
+            android:id="@+id/cameraImage"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_height="151dp"
+            android:background="@drawable/pic_photo">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/geologica_auto_medium"
-                android:text="Ингредиенты"
-                android:layout_gravity="center"
-                android:textSize="25sp" />
+        </ImageView>
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                >
-
-                <TextView
-                    android:id="@+id/resultText"
-                    android:layout_width="match_parent"
-                    android:fontFamily="@font/geologica_auto_medium"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/text_field"
-                    android:padding="30dp"
-                    android:scrollbars="vertical"
-                    android:text=""
-                    android:textSize="27sp"
-                    android:textColor="@color/black" />
-            </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
             <Button
-                android:id="@+id/takeCharBtn"
-                android:layout_width="match_parent"
-                android:layout_height="63dp"
-                android:textColor="#FFFFFF"
+                android:id="@+id/captureImgBtn"
+                android:layout_width="150dp"
+                android:layout_height="70dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/btns_blue"
+                android:background="@drawable/btns_green"
                 android:fontFamily="@font/geologica_auto_medium"
-                android:text="Узнать результат"
-                android:textSize="25sp"
-                app:backgroundTint="@null" />
+                android:text="Сделать фото"
+                android:layout_weight="1"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                app:backgroundTint="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+            </Button>
 
+        <View
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+        </View>
+
+        <Button
+            android:id="@+id/engCaptureImgBtn"
+            android:layout_width="150dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:background="@drawable/btns_green"
+            android:fontFamily="@font/geologica_auto_medium"
+            android:text="Выбрать из галереи"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:backgroundTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </Button>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/black"
+        android:text="Распознанные ингредиенты:"
+        android:textSize="23sp"
+        android:fontFamily="@font/geologica_regular"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/blocks_container"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/resultText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="top"
+            android:textColor="@color/black"
+            android:fontFamily="@font/geologica_regular"
+            android:hint="Тут появится текст после сканирования..."
+            android:textSize="16sp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/takeCharBtn"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/geologica_auto_medium"
+        android:text="Узнать результат"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:background="@drawable/btns_blue"
+        app:backgroundTint="@null">
+
+    </Button>
         </LinearLayout>
     </ScrollView>
     <ProgressBar
