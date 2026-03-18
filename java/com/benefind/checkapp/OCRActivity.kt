@@ -1,39 +1,30 @@
 package com.benefind.checkapp
+
 import android.Manifest
-import kotlinx.coroutines.*
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.provider.MediaStore
+import android.view.View
+import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import com.googlecode.tesseract.android.TessBaseAPI
+import androidx.lifecycle.lifecycleScope
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import android.content.pm.PackageManager
-import java.util.Locale
-import org.w3c.dom.Text
-import java.util.Date
-import android.text.method.ScrollingMovementMethod
-import androidx.core.app.ActivityCompat
-import android.content.Intent
-import android.graphics.Canvas
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
-import android.graphics.Paint
-import android.view.View
-import android.widget.ProgressBar
-import androidx.lifecycle.lifecycleScope
 
 class OCRActivity : AppCompatActivity() {
 
@@ -49,14 +40,15 @@ class OCRActivity : AppCompatActivity() {
     private lateinit var backButtonOCR: ImageView
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
-    private lateinit var tessBaseAPI: TessBaseAPI
-    private val tessDataPath: String by lazy { filesDir.absolutePath + "/" } // Путь к папке с tessdata
 
+    // Инициализация распознавателя ML Kit для латиницы
+    private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ocr)
 
+        // Привязка UI элементов
         backButtonOCR = findViewById(R.id.backButtonOCR)
         progressBar = findViewById(R.id.progressBar)
         engCaptureImgBtn = findViewById(R.id.engCaptureImgBtn)
@@ -66,73 +58,33 @@ class OCRActivity : AppCompatActivity() {
         takeCharBtn = findViewById(R.id.takeCharBtn)
 
         progressBar.visibility = View.GONE
-        copyTessDataFiles()
 
-        tessBaseAPI = TessBaseAPI()
-        if (!tessBaseAPI.init(tessDataPath, "rus")) {
-            Toast.makeText(this, "Tesseract init failed", Toast.LENGTH_SHORT).show()
-            finish()
-        }
-
+        // Разрешение на камеру
         requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-                if (isGranted) {
-                    captureImage()
-                } else {
-                    Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
-                }
+                if (isGranted) captureImage() else Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
             }
 
+        // Лаунчер для фото с камеры
         takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success) {
                 currentPhotoPath?.let { path ->
-                    lifecycleScope.launch {
-                        val originalBitmap = BitmapFactory.decodeFile(path)
-                        if (originalBitmap != null) {
-                            val preparedBitmap = prepareBitmap(originalBitmap)
-                            cameraImage.setImageBitmap(preparedBitmap)
-
-
-                            progressBar.visibility = View.VISIBLE
-                            resultText.isEnabled = false
-
-                            withContext(Dispatchers.Default) {
-                                recognizeText(preparedBitmap)
-                            }
-                            progressBar.visibility = View.GONE
-                            resultText.isEnabled = true
-                        }
-                    }
+                    val bitmap = BitmapFactory.decodeFile(path)
+                    processImage(bitmap)
                 }
             }
         }
 
-
-
+        // Лаунчер для выбора из галереи
         pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
-                lifecycleScope.launch {
-                    val inputStream = contentResolver.openInputStream(it)
-                    val originalBitmap = BitmapFactory.decodeStream(inputStream)
-                    inputStream?.close()
-                    if (originalBitmap != null) {
-                        val preparedBitmap = prepareBitmap(originalBitmap)
-                        cameraImage.setImageBitmap(preparedBitmap)
-
-                        progressBar.visibility = View.VISIBLE
-                        resultText.isEnabled = false
-
-                        withContext(Dispatchers.Default) {
-                            recognizeText(preparedBitmap)
-                        }
-
-                        progressBar.visibility = View.GONE
-                        resultText.isEnabled = true
-                    } else {
-                        Toast.makeText(this@OCRActivity, "Не удалось загрузить изображение", Toast.LENGTH_SHORT).show()
-                    }
-                }
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+                processImage(bitmap)
             }
+        }
+
+        captureImgBtn.setOnClickListener {
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
 
         val galleryBtn: Button = findViewById(R.id.engCaptureImgBtn)
@@ -140,65 +92,51 @@ class OCRActivity : AppCompatActivity() {
             pickImageLauncher.launch("image/*")
         }
 
-
-        backButtonOCR.setOnClickListener {
-            finish()
-        }
-
         engCaptureImgBtn.setOnClickListener {
             pickImageLauncher.launch("image/*")
         }
 
-
-        captureImgBtn.setOnClickListener {
-            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+        backButtonOCR.setOnClickListener {
+            finish()
         }
-
 
         takeCharBtn.setOnClickListener {
             val intent = Intent(this, ResultActivity::class.java)
             intent.putExtra("recognizedText", recognizedAdditives)
             startActivity(intent)
         }
+    }// Основная функция распознавания через ML Kit
+    private fun processImage(bitmap: Bitmap?) {
+        if (bitmap == null) return
 
+        cameraImage.setImageBitmap(bitmap)
+        progressBar.visibility = View.VISIBLE
+        resultText.isEnabled = false
 
-    }
+        val image = InputImage.fromBitmap(bitmap, 0)
 
-    private fun copyTessDataFiles() {
-        try {
-            val tessDataFolder = File(tessDataPath + "tessdata/")
-            if (!tessDataFolder.exists()) {
-                tessDataFolder.mkdir()
+        recognizer.process(image)
+            .addOnSuccessListener { visionText ->
+                progressBar.visibility = View.GONE
+                resultText.isEnabled = true
+
+                // Фильтруем текст: оставляем только латиницу, цифры и пробелы
+                val rawText = visionText.text
+                var cleanText = rawText.replace(Regex("[^a-zA-Z0-9 ]"), " ")
+                cleanText = cleanText.replace(Regex("\\s+"), " ").trim()
+
+                resultText.text = cleanText
+                recognizedAdditives = cleanText
             }
-
-            val filePath = "$tessDataPath/tessdata/rus.traineddata"
-            val file = File(filePath)
-
-            if (!file.exists()) {
-                assets.open("tessdata/rus.traineddata").use { inputStream ->
-                    FileOutputStream(filePath).use { outputStream ->
-                        val buffer = ByteArray(1024)
-                        var read: Int
-                        while (inputStream.read(buffer).also { read = it } != -1) {
-                            outputStream.write(buffer, 0, read)
-                        }
-                    }
-                }
+            .addOnFailureListener { e ->
+                progressBar.visibility = View.GONE
+                resultText.isEnabled = true
+                Toast.makeText(this, "Recognition failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Toast.makeText(
-                this,
-                "Ошибка копирования данных tessdata: ${e.message}",
-                Toast.LENGTH_LONG
-            ).show()
-        }
     }
-
 
     private fun createImageFile(): File {
-        val timeStamp: String =
-            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir).apply {
             currentPhotoPath = absolutePath
@@ -209,66 +147,12 @@ class OCRActivity : AppCompatActivity() {
         val photoFile: File? = try {
             createImageFile()
         } catch (ex: IOException) {
-            Toast.makeText(this, "Error occured while creating the file", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Error occurred while creating the file", Toast.LENGTH_SHORT).show()
             null
         }
         photoFile?.also {
             val photoUri: Uri = FileProvider.getUriForFile(this, "$packageName.provider", it)
             takePictureLauncher.launch(photoUri)
         }
-    }
-
-
-    private suspend fun recognizeText(bitmap: Bitmap) {
-        withContext(Dispatchers.Default) {
-            tessBaseAPI.setImage(bitmap)
-            val rawText = tessBaseAPI.utF8Text ?: ""
-            var cleanText = rawText.replace(Regex("[^a-zA-Zа-яА-ЯёЁ0-9 ]"), " ")
-            cleanText = cleanText.replace(Regex("\\s+"), " ").trim()
-
-            withContext(Dispatchers.Main) {
-                resultText.text = cleanText
-                recognizedAdditives = cleanText
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        tessBaseAPI.end()
-    }
-
-    private suspend fun prepareBitmap(bitmap: Bitmap): Bitmap = withContext(Dispatchers.Default) {
-        val maxWidth = 1500f
-        val scale = if (bitmap.width > maxWidth) maxWidth / bitmap.width else 1f
-        val newWidth = (bitmap.width * scale).toInt()
-        val newHeight = (bitmap.height * scale).toInt()
-
-        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
-        val cm = ColorMatrix()
-        cm.setSaturation(0f)
-        val contrast = 30f
-        val offset = -140f * contrast + 128f
-        val matrix = floatArrayOf(
-            contrast, 0f, 0f, 0f, offset,
-            0f, contrast, 0f, 0f, offset,
-            0f, 0f, contrast, 0f, offset,
-            0f, 0f, 0f, 1f, 0f
-        )
-        cm.postConcat(ColorMatrix(matrix))
-        val resultBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(resultBitmap)
-        val paint = Paint().apply {
-            colorFilter = ColorMatrixColorFilter(cm)
-            isAntiAlias = true
-            isFilterBitmap = true
-        }
-
-        canvas.drawBitmap(scaledBitmap, 0f, 0f, paint)
-        if (scaledBitmap != resultBitmap) {
-            scaledBitmap.recycle()
-        }
-
-        resultBitmap
     }
 }
