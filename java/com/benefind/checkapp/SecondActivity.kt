@@ -10,9 +10,9 @@ class SecondActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
-        val button_to_main = findViewById<ImageButton>(R.id.buttonToMain)
-        val button_to_OCR = findViewById< ImageButton>(R.id.buttonToOCR)
-        val button_to_hand = findViewById<ImageButton>(R.id.buttonToHand)
+        val button_to_main = findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.buttonToMain)
+        val button_to_OCR = findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.buttonToOCR)
+        val button_to_hand = findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.buttonToHand)
         button_to_main.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
