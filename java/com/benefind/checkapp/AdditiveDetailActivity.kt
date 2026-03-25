@@ -25,9 +25,13 @@ class AdditiveDetailActivity : AppCompatActivity() {
             binding.detailStatus.text = "Статус: ${it.legality}"
 
             // Красим статус
-            if (it.legality == "Разрешен") {
+            if (it.legality == "Разрешен" || it.legality == "Безопасен") {
                 binding.detailStatus.setTextColor(Color.parseColor("#3fb500"))
-            } else {
+            }
+            else if (it.legality == "Вреден") {
+                binding.detailStatus.setTextColor(Color.parseColor("#FF9800"))
+            }
+            else {
                 binding.detailStatus.setTextColor(Color.parseColor("#d42c2c"))
             }
 

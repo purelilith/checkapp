@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.benefind.checkapp.databinding.ItemAdditiveBinding
 
@@ -22,41 +23,60 @@ class AdditiveAdapter(private var items: MutableList<Additive>) :
 
     override fun onBindViewHolder(holder: AdditiveViewHolder, position: Int) {
         val additive = items[position]
+        val context = holder.itemView.context
 
-        // 1. Логика отображения кода (скрываем, если null или пустой)
-        if (additive.code.isNullOrEmpty()) {
-            holder.binding.codeTextView.visibility = View.GONE
-        } else {
-            holder.binding.codeTextView.visibility = View.VISIBLE
-            holder.binding.codeTextView.text = additive.name
+        // 1. Новая градация безопасности (используем legality)
+        // Добавляем "Вреден" для оранжевого статуса
+        val statusColor = when (additive.legality) {
+            "Безопасен", "Разрешен" -> Color.parseColor("#3FB500") // Зеленый
+            "Вреден" -> Color.parseColor("#FF9800")               // Оранжевый
+            else -> Color.parseColor("#D42C2C")                    // Красный (Опасен)
         }
 
-        // 2. Установка названия
-        holder.binding.nameTextView.text = additive.code
+        // 2. РАЗДЕЛЯЕМ ПРАВИЛА: КОСМЕТИКА VS ЕДА
+        if (additive.category == "COSMETIC") {
+            // --- ПРАВИЛА ДЛЯ КОСМЕТИКИ ---
+            holder.binding.codeTextView.text = ""
 
-        // 3. Определение цвета на основе статуса
-        val isSafe = additive.legality == "Разрешен" || additive.legality == "Безопасно"
-        val statusColor = if (isSafe) Color.parseColor("#3FB500") else Color.parseColor("#D42C2C")
+            // Выбираем иконку из трех вариантов
+            val iconRes = when (additive.legality) {
+                "Безопасен"-> R.drawable.ic_circle_green
+                "Вреден" -> R.drawable.ic_circle_orange
+                else -> R.drawable.ic_circle_red
+            }
 
-        // 4. Применяем цвет к коду, а если кода нет — к названию
-        if (additive.code.isNullOrEmpty()) {
-            holder.binding.nameTextView.setTextColor(statusColor)
-        } else {
+            holder.binding.codeTextView.setCompoundDrawablesWithIntrinsicBounds(
+                ContextCompat.getDrawable(context, iconRes), null, null, null
+            )
+            holder.binding.codeTextView.visibility = View.VISIBLE
+
+            // Для косметики название берем из name (так как code пустой)
+            holder.binding.nameTextView.text = additive.name
+            holder.binding.nameTextView.setTextColor(Color.BLACK)
+        }
+        else {
+            // --- ПРАВИЛА ДЛЯ ЕДЫ (E-добавки) ---
+            holder.binding.codeTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+
+            // Слева: ЦВЕТНОЙ КОД (поле .name)
+            holder.binding.codeTextView.text = additive.name
             holder.binding.codeTextView.setTextColor(statusColor)
+            holder.binding.codeTextView.visibility = View.VISIBLE
+
+            // Справа: ЧЕРНОЕ НАЗВАНИЕ (поле .code)
+            holder.binding.nameTextView.text = additive.code
             holder.binding.nameTextView.setTextColor(Color.BLACK)
         }
 
-        // 5. Переход к деталям
+        // Обработка клика
         val clickListener = View.OnClickListener {
-            val context = holder.itemView.context
             val intent = Intent(context, AdditiveDetailActivity::class.java).apply {
                 putExtra("EXTRA_ADDITIVE", additive)
             }
             context.startActivity(intent)
         }
-
         holder.binding.arrowImageView.setOnClickListener(clickListener)
-        holder.itemView.setOnClickListener(clickListener) // Клик по всей карточке тоже работает
+        holder.itemView.setOnClickListener(clickListener)
     }
 
     fun updateList(newList: List<Additive>) {
