@@ -10,12 +10,24 @@ interface AdditiveDao {
     @Query("SELECT * FROM additives")
     suspend fun getAll(): List<Additive>
 
-    @Query("SELECT * FROM additives WHERE code LIKE :query OR name LIKE :query")
+    // Получить только еду или только косметику
+    @Query("SELECT * FROM additives WHERE category = :category")
+    suspend fun getAllByCategory(category: String): List<Additive>
+
+    // Поиск по подстроке (для EditText)
+    @Query("""
+        SELECT * FROM additives 
+        WHERE (UPPER(name) LIKE UPPER(:query)) 
+        OR (code IS NOT NULL AND UPPER(code) LIKE UPPER(:query))
+    """)
     suspend fun search(query: String): List<Additive>
 
-    // Поиск по списку слов: проверяем и код, и имя
-    // Мы используем оператор IN для кодов и проверяем, содержится ли имя в списке слов
-    @Query("SELECT * FROM additives WHERE UPPER(code) IN (:words) OR UPPER(name) IN (:words)")
+    // Поиск точных совпадений по списку слов (для OCR)
+    @Query("""
+        SELECT * FROM additives 
+        WHERE UPPER(name) IN (:words) 
+        OR (code IS NOT NULL AND UPPER(code) IN (:words))
+    """)
     suspend fun getByWords(words: List<String>): List<Additive>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

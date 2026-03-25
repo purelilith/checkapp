@@ -3,7 +3,6 @@ package com.benefind.checkapp
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -18,7 +17,6 @@ class ResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
 
-        // Инициализация UI
         val backButton = findViewById<ImageButton>(R.id.backButton)
         val verdictCard = findViewById<CardView>(R.id.verdictCard)
         val verdictTitle = findViewById<TextView>(R.id.verdictTitle)
@@ -27,47 +25,53 @@ class ResultActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // 1. Получаем текст и разбиваем на слова (только буквы и цифры)
-        val receivedText = intent.getStringExtra("recognizedText") ?: ""
-        val wordList = receivedText.uppercase()
-            .split(Regex("[^A-ZА-Я0-9]"))
-            .filter { it.length > 2 }
-
+        // 1. Получаем "сырой" текст в верхнем регистре
+        val rawText = intent.getStringExtra("recognizedText")?.uppercase() ?: ""
         val db = AppDatabase.getDatabase(this)
 
         lifecycleScope.launch {
-            // 2. Поиск в базе данных Room
-            val matchedItems = db.additiveDao().getByWords(wordList)
+            // 2. Загружаем все ингредиенты из базы для поиска вхождений
+            val allIngredients = db.additiveDao().getAll()
+
+            // 3. Ищем ингредиенты, названия или коды которых есть в тексте
+            val matchedItems = allIngredients.filter { ingredient ->
+                val nameMatch = rawText.contains(ingredient.name.uppercase())
+                val codeMatch = ingredient.code?.let { rawText.contains(it.uppercase()) } ?: false
+                nameMatch || codeMatch
+            }
 
             if (matchedItems.isNotEmpty()) {
-                // 3. Проверка: есть ли хоть одна запрещенная добавка?
-                val isSafe = matchedItems.none { it.legality == "Запрещен" }
+                // 4. Проверяем безопасность (для всех типов ингредиентов)
+                val isSafe = matchedItems.none { it.legality == "Запрещен" || it.legality == "Опасно" }
+
+                // Определяем тип контента для заголовка (преобладает ли косметика)
+                val isCosmetic = matchedItems.any { it.category == "COSMETIC" }
 
                 if (isSafe) {
+                    val title = if (isCosmetic) "БЕЗОПАСНЫЙ СОСТАВ" else "МОЖНО ЕСТЬ"
                     setVerdict(verdictCard, verdictTitle, verdictSubtitle,
-                        "МОЖНО ЕСТЬ", "#3FB500", "#F1F8E9",
-                        "Найдено ${matchedItems.size} безопасных совпадений")
+                        title, "#3FB500", "#F1F8E9",
+                        "Найдено ${matchedItems.size} известных компонентов")
                 } else {
+                    val title = if (isCosmetic) "ЕСТЬ ОПАСНЫЕ КОМПОНЕНТЫ" else "НЕЛЬЗЯ ЕСТЬ"
                     setVerdict(verdictCard, verdictTitle, verdictSubtitle,
-                        "НЕЛЬЗЯ ЕСТЬ", "#D42C2C", "#FFEBEE",
-                        "В составе обнаружены опасные добавки!")
+                        title, "#D42C2C", "#FFEBEE",
+                        "Внимание! В составе обнаружены вредные вещества")
                 }
 
-                // 4. Установка списка найденных ингредиентов
-                recyclerView.adapter = ResultDetailAdapter(matchedItems)
+                // Используем твой AdditiveAdapter (обязательно обнови его под новую модель)
+                recyclerView.adapter = AdditiveAdapter(matchedItems.toMutableList())
 
             } else {
-                // Если ничего не нашли в базе
                 setVerdict(verdictCard, verdictTitle, verdictSubtitle,
-                    "СОСТАВ ЧИСТ", "#757575", "#F5F5F5",
-                    "Подозрительных добавок не обнаружено")
+                    "НЕ РАСПОЗНАНО", "#757575", "#F5F5F5",
+                    "В базе пока нет данных об этих компонентах")
             }
         }
 
         backButton.setOnClickListener { finish() }
     }
 
-    // Вспомогательная функция для настройки карточки вердикта
     private fun setVerdict(card: CardView, title: TextView, subtitle: TextView,
                            text: String, textColor: String, bgColor: String, subText: String) {
         title.text = text

@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Additive::class], version = 1)
+@Database(entities = [Additive::class], version = 2) // Версия 2 обязательна!
 abstract class AppDatabase : RoomDatabase() {
     abstract fun additiveDao(): AdditiveDao
 
@@ -116,7 +116,13 @@ abstract class AppDatabase : RoomDatabase() {
                     Additive("E950", "Ацесульфам калия", "Разрешен", "Подсластитель. В 200 раз слаще сахара, не содержит калорий."),
                     Additive("E951", "Аспартам", "Разрешен", "Сахарозаменитель. Противопоказан людям с фенилкетонурией."),
                     Additive("E954", "Сахарин", "Разрешен", "Старейший подсластитель. Имеет металлический привкус, подозревался в канцерогенности."),
-                    Additive("E960", "Стевиозид", "Разрешен", "Натуральный экстракт стевии. Один из самых безопасных подсластителей.")
+                    Additive("E960", "Стевиозид", "Разрешен", "Натуральный экстракт стевии. Один из самых безопасных подсластителей."),
+
+                    // КОСМЕТИКА (COSMETIC)
+                    Additive("Aqua", null, "Разрешен", "Вода. Основной растворитель в косметике.", "COSMETIC"),
+                    Additive("Glycerin", null, "Разрешен", "Увлажняющий компонент, удерживает влагу в коже.", "COSMETIC"),
+                    Additive("Sodium Laureth Sulfate", null, "Опасно", "Дешевый ПАВ. Может вызывать раздражение и сухость.", "COSMETIC"),
+                    Additive("Methylparaben", null, "Опасно", "Консервант. Спорный ингредиент, возможный аллерген.", "COSMETIC")
                 ))
             }
         }
