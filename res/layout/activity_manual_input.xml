@@ -23,7 +23,9 @@
             android:layout_width="70dp"
             android:contentDescription="Back"
             android:layout_height="70dp"
-            android:background="@drawable/ic_back_btn"
+            android:src="@drawable/ic_back_btn"
+            android:background="@drawable/btn_more_bg_selector"
+            android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent">
         </ImageButton>

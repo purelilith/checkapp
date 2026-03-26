@@ -10,10 +10,12 @@
     <!-- Кнопка назад -->
     <ImageButton
         android:id="@+id/backButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/ic_back_btn"
+        android:src="@drawable/ic_back_btn"
+        android:background="@drawable/btn_more_bg_selector"
+        android:scaleType="centerInside"
         android:contentDescription="Back" />
 
     <!-- КАРТОЧКА ВЕРДИКТА -->

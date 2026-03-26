@@ -24,7 +24,9 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:contentDescription="Back"
-                android:background="@drawable/ic_back_btn"
+                android:src="@drawable/ic_back_btn"
+                android:background="@drawable/btn_more_bg_selector"
+                android:scaleType="centerInside"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -32,10 +34,11 @@
                 android:id="@+id/moreBtnSecond"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:contentDescription="More"
-                android:background="@drawable/ic_more_btn"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:src="@drawable/ic_more_btn"
+                android:background="@drawable/btn_more_bg_selector"
+                android:scaleType="centerInside"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
