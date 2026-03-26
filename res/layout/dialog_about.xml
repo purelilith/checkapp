@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center_horizontal"
+    android:background="@drawable/blocks_btns_style">
+
+<!-- Полоска сверху для красоты -->
+<View
+    android:layout_width="40dp"
+    android:layout_height="4dp"
+    android:layout_gravity="center"
+    android:layout_marginBottom="20dp"
+    android:background="#D1D1D1" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="CheckApp"
+    android:textSize="28sp"
+    android:textColor="#000000"
+    android:fontFamily="@font/geologica_semibold"
+    android:layout_marginBottom="8dp" />
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fontFamily="@font/geologica_regular"
+    android:gravity="center"
+    android:text="Приложение создано для быстрой проверки состава продуктов и косметики на наличие вредных компонентов.\n\nБерегите своё здоровье!"
+    android:textColor="#333333"
+    android:textSize="18sp"
+    android:lineSpacingExtra="4dp" />
+
+<Button
+    android:id="@+id/closeAboutBtn"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginTop="30dp"
+    app:backgroundTint="@null"
+    android:background="@drawable/btns_green"
+    android:text="Закрыть"
+    android:textAllCaps="false"
+    android:textColor="#FFFFFF"
+    android:textSize="18sp"
+    android:fontFamily="@font/geologica_auto_medium" />
+</LinearLayout>

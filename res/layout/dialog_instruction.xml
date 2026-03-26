@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/blocks_btns_style"> <!-- Используем твой белый фон с углами -->
+
+<View
+    android:layout_width="40dp"
+    android:layout_height="4dp"
+    android:layout_gravity="center"
+    android:layout_marginBottom="16dp"
+    android:background="#D1D1D1" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Инструкция"
+    android:textSize="24sp"
+    android:textColor="#000000"
+    android:fontFamily="@font/geologica_regular"
+    android:layout_marginBottom="16dp" />
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fontFamily="@font/geologica_regular"
+    android:lineSpacingExtra="4dp"
+    android:text="1. Выберите режим: ЕДА или КОСМЕТИКА.\n\n2. Нажмите на камеру, чтобы сфотографировать состав, или введите название вручную.\n\n3. В режиме ЕДА приложение ищет опасные Е-добавки.\n\n4. В режиме КОСМЕТИКА иконки покажут статус безопасности по системе INCI.\n\nРекомендация: Старайтесь делать фото при хорошем освещении для точного распознавания."
+    android:textColor="#333333"
+    android:textSize="18sp" />
+
+<Button
+    android:id="@+id/closeBtn"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginTop="24dp"
+    app:backgroundTint="@null"
+    android:background="@drawable/btns_green"
+    android:text="Понятно"
+    android:textColor="#FFFFFF"
+    android:fontFamily="@font/geologica_auto_medium" />
+</LinearLayout>
