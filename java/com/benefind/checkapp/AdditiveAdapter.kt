@@ -76,7 +76,6 @@ class AdditiveAdapter(private var items: MutableList<Additive>) :
             context.startActivity(intent)
         }
         holder.binding.arrowImageView.setOnClickListener(clickListener)
-        holder.itemView.setOnClickListener(clickListener)
     }
 
     fun updateList(newList: List<Additive>) {

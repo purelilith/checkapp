@@ -32,9 +32,13 @@ class ResultDetailAdapter(private val items: List<Additive>) :
         holder.resDescription.text = item.description
 
         // Красим элементы в зависимости от статуса безопасности
-        val color = if (item.legality == "Запрещен") {
+        val color = if (item.legality == "Запрещен" || item.legality == "Опасен") {
             Color.parseColor("#D42C2C") // Красный
-        } else {
+        }
+        else if (item.legality == "Вреден") {
+            Color.parseColor("#FF9800")
+        }
+        else {
             Color.parseColor("#3FB500") // Зеленый
         }
 

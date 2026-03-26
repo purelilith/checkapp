@@ -37,11 +37,15 @@
 
     <ImageView
         android:id="@+id/arrowImageView"
-        android:layout_width="35dp"
-        android:layout_height="44dp"
+        android:layout_width="38dp"
+        android:layout_height="48dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/btn_desk_selector"
         android:src="@drawable/ic_see_desk"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

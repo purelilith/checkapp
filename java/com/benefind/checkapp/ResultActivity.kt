@@ -60,7 +60,7 @@ class ResultActivity : AppCompatActivity() {
                 }
 
                 // Используем твой AdditiveAdapter (обязательно обнови его под новую модель)
-                recyclerView.adapter = AdditiveAdapter(matchedItems.toMutableList())
+                recyclerView.adapter = ResultDetailAdapter(matchedItems.toMutableList())
 
             } else {
                 setVerdict(verdictCard, verdictTitle, verdictSubtitle,
