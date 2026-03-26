@@ -10,11 +10,11 @@ interface AdditiveDao {
     @Query("SELECT * FROM additives")
     suspend fun getAll(): List<Additive>
 
-    // Получить только еду или только косметику
+    // получить только еду или только косметику
     @Query("SELECT * FROM additives WHERE category = :category")
     suspend fun getAllByCategory(category: String): List<Additive>
 
-    // Поиск по подстроке (для EditText)
+    // поиск по подстроке (для EditText)
     @Query("""
         SELECT * FROM additives 
         WHERE (UPPER(name) LIKE UPPER(:query)) 
@@ -22,7 +22,7 @@ interface AdditiveDao {
     """)
     suspend fun search(query: String): List<Additive>
 
-    // Поиск точных совпадений по списку слов (для OCR)
+    // поиск точных совпадений по списку слов (для OCR)
     @Query("""
         SELECT * FROM additives 
         WHERE UPPER(name) IN (:words) 

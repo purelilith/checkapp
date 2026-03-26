@@ -25,15 +25,15 @@ class ResultActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // 1. Получаем "сырой" текст в верхнем регистре
+        // получение распознанного текста
         val rawText = intent.getStringExtra("recognizedText")?.uppercase() ?: ""
         val db = AppDatabase.getDatabase(this)
 
         lifecycleScope.launch {
-            // 2. Загружаем все ингредиенты из базы для поиска вхождений
+            // загрузка всех ингредиентов из БД
             val allIngredients = db.additiveDao().getAll()
 
-            // 3. Ищем ингредиенты, названия или коды которых есть в тексте
+            // сверяю распозанное с ингредиентами из БД
             val matchedItems = allIngredients.filter { ingredient ->
                 val nameMatch = rawText.contains(ingredient.name.uppercase())
                 val codeMatch = ingredient.code?.let { rawText.contains(it.uppercase()) } ?: false
@@ -41,10 +41,10 @@ class ResultActivity : AppCompatActivity() {
             }
 
             if (matchedItems.isNotEmpty()) {
-                // 4. Проверяем безопасность (для всех типов ингредиентов)
+                // проверка безопасности
                 val isSafe = matchedItems.none { it.legality == "Запрещен" || it.legality == "Опасно" }
 
-                // Определяем тип контента для заголовка (преобладает ли косметика)
+                // определение типа заголовка
                 val isCosmetic = matchedItems.any { it.category == "COSMETIC" }
 
                 if (isSafe) {
@@ -59,7 +59,6 @@ class ResultActivity : AppCompatActivity() {
                         "Внимание! В составе обнаружены вредные вещества")
                 }
 
-                // Используем твой AdditiveAdapter (обязательно обнови его под новую модель)
                 recyclerView.adapter = ResultDetailAdapter(matchedItems.toMutableList())
 
             } else {

@@ -10,9 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
 class SecondActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
+
         val moreBtn = findViewById<ImageButton>(R.id.moreBtnSecond)
         val button_to_main =
             findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.buttonToMain)
@@ -20,6 +22,7 @@ class SecondActivity : AppCompatActivity() {
             findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.buttonToOCR)
         val button_to_hand =
             findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.buttonToHand)
+
         button_to_main.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -32,17 +35,16 @@ class SecondActivity : AppCompatActivity() {
             val intent = Intent(this, ManualInputActivity::class.java)
             startActivity(intent)
         }
+
         moreBtn.setOnClickListener { view ->
-            // 1. Создаем само окошко
             val listPopupWindow = androidx.appcompat.widget.ListPopupWindow(this)
 
-            // 2. Настраиваем данные (адаптер со шрифтом geologica)
             val items = listOf("Инструкция", "О приложении")
             val adapter = ArrayAdapter(this, R.layout.item_menu, R.id.menuItemText, items)
 
             listPopupWindow.setAdapter(adapter)
-            listPopupWindow.anchorView = view // Привязываем к кнопке
-            listPopupWindow.width = 600       // Ширина (подбери под дизайн)
+            listPopupWindow.anchorView = view
+            listPopupWindow.width = 600
             listPopupWindow.setBackgroundDrawable(
                 ContextCompat.getDrawable(
                     this,
@@ -50,22 +52,18 @@ class SecondActivity : AppCompatActivity() {
                 )
             )
 
-            // --- ВОТ СЮДА ВСТАВЛЯЕМ ОБРАБОТЧИК КЛИКОВ ---
             listPopupWindow.setOnItemClickListener { _, _, position, _ ->
                 when (position) {
                     0 -> {
-                        showInstruction() // Твой метод для открытия инструкции
+                        showInstruction()
                     }
 
                     1 -> {
-                        showAboutDialog() // Твой метод для "О приложении"
+                        showAboutDialog()
                     }
                 }
-                listPopupWindow.dismiss() // Закрыть меню после выбора
+                listPopupWindow.dismiss()
             }
-            // --------------------------------------------
-
-            // 3. Показываем меню
             listPopupWindow.show()
         }
     }
@@ -86,7 +84,6 @@ class SecondActivity : AppCompatActivity() {
         val dialog = com.google.android.material.bottomsheet.BottomSheetDialog(this)
         val view = layoutInflater.inflate(R.layout.dialog_about, null)
 
-        // Кнопка закрытия
         view.findViewById<Button>(R.id.closeAboutBtn).setOnClickListener {
             dialog.dismiss()
         }

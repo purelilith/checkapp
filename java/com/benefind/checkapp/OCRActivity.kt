@@ -41,14 +41,12 @@ class OCRActivity : AppCompatActivity() {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
 
-    // Инициализация распознавателя ML Kit для латиницы
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ocr)
 
-        // Привязка UI элементов
         backButtonOCR = findViewById(R.id.backButtonOCR)
         progressBar = findViewById(R.id.progressBar)
         engCaptureImgBtn = findViewById(R.id.engCaptureImgBtn)
@@ -59,13 +57,13 @@ class OCRActivity : AppCompatActivity() {
 
         progressBar.visibility = View.GONE
 
-        // Разрешение на камеру
+        // разрешение на камеру
         requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
                 if (isGranted) captureImage() else Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
             }
 
-        // Лаунчер для фото с камеры
+        // лаунчер для фото с камеры
         takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success) {
                 currentPhotoPath?.let { path ->
@@ -75,7 +73,7 @@ class OCRActivity : AppCompatActivity() {
             }
         }
 
-        // Лаунчер для выбора из галереи
+        // лаунчер для выбора из галереи
         pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
@@ -83,15 +81,12 @@ class OCRActivity : AppCompatActivity() {
             }
         }
 
+        // кнопка включения камеры
         captureImgBtn.setOnClickListener {
             requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
 
-        val galleryBtn: Button = findViewById(R.id.engCaptureImgBtn)
-        galleryBtn.setOnClickListener {
-            pickImageLauncher.launch("image/*")
-        }
-
+        // кнопка открытия галереи
         engCaptureImgBtn.setOnClickListener {
             pickImageLauncher.launch("image/*")
         }
@@ -100,12 +95,13 @@ class OCRActivity : AppCompatActivity() {
             finish()
         }
 
+        // кнопка расшифровки распозанного
         takeCharBtn.setOnClickListener {
             val intent = Intent(this, ResultActivity::class.java)
             intent.putExtra("recognizedText", recognizedAdditives)
             startActivity(intent)
         }
-    }// Основная функция распознавания через ML Kit
+    }// основная функция распознавания через ML Kit
     private fun processImage(bitmap: Bitmap?) {
         if (bitmap == null) return
 
@@ -120,7 +116,7 @@ class OCRActivity : AppCompatActivity() {
                 progressBar.visibility = View.GONE
                 resultText.isEnabled = true
 
-                // Фильтруем текст: оставляем только латиницу, цифры и пробелы
+                // фильтр
                 val rawText = visionText.text
                 var cleanText = rawText.replace(Regex("[^a-zA-Z0-9 ]"), " ")
                 cleanText = cleanText.replace(Regex("\\s+"), " ").trim()

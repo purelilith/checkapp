@@ -55,7 +55,7 @@
         android:background="@android:color/transparent"
         android:fontFamily="@font/geologica_auto_medium"
         android:gravity="top"
-        android:hint="Например: сахар, мука, Е102, лимонная кислота..."
+        android:hint="Например: Е102 (на английском), aqua, sodium laureth sulfate ..."
         android:padding="10dp"
         android:textColor="#000000"
         android:textSize="18sp" />
