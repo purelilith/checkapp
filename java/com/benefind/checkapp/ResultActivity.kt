@@ -33,7 +33,7 @@ class ResultActivity : AppCompatActivity() {
             // загрузка всех ингредиентов из БД
             val allIngredients = db.additiveDao().getAll()
 
-            // сверяю распозанное с ингредиентами из БД
+            // сверяю распознанное с ингредиентами из БД
             val matchedItems = allIngredients.filter { ingredient ->
                 val nameMatch = rawText.contains(ingredient.name.uppercase())
                 val codeMatch = ingredient.code?.let { rawText.contains(it.uppercase()) } ?: false
@@ -41,23 +41,31 @@ class ResultActivity : AppCompatActivity() {
             }
 
             if (matchedItems.isNotEmpty()) {
-                // проверка безопасности
-                val isSafe = matchedItems.none { it.legality == "Запрещен" || it.legality == "Опасно" }
 
-                // определение типа заголовка
+                val hasDanger = matchedItems.any { it.legality == "Запрещен" || it.legality == "Опасен" }
+                val hasHarm = matchedItems.any { it.legality == "Вреден" }
                 val isCosmetic = matchedItems.any { it.category == "COSMETIC" }
 
-                if (isSafe) {
-                    val title = if (isCosmetic) "БЕЗОПАСНЫЙ СОСТАВ" else "МОЖНО ЕСТЬ"
-                    setVerdict(verdictCard, verdictTitle, verdictSubtitle,
-                        title, "#3FB500", "#F1F8E9",
-                        "Найдено ${matchedItems.size} известных компонентов")
-                } else {
-                    val title = if (isCosmetic) "ЕСТЬ ОПАСНЫЕ КОМПОНЕНТЫ" else "НЕЛЬЗЯ ЕСТЬ"
-                    setVerdict(verdictCard, verdictTitle, verdictSubtitle,
-                        title, "#D42C2C", "#FFEBEE",
-                        "Внимание! В составе обнаружены вредные вещества")
+                when {
+                    hasDanger -> {
+                        val title = if (isCosmetic) "ЕСТЬ ОПАСНЫЕ КОМПОНЕНТЫ" else "ЕСТЬ ОПАСНЫЕ ДОБАВКИ"
+                        setVerdict(verdictCard, verdictTitle, verdictSubtitle,
+                            title, "#D42C2C", "#FFEBEE",
+                            "В составе обнаружены опасные вещества")
+                    }
+                    hasHarm -> {
+                        val title = if (isCosmetic) "ЕСТЬ ВРЕДНЫЕ КОМПОНЕНТЫ" else "ЕСТЬ ВРЕДНЫЕ ДОБАВКИ"
+                        setVerdict(verdictCard, verdictTitle, verdictSubtitle,
+                            title, "#FF6E00", "#FFDFB7",
+                            "В составе обнаружены вредные вещества")
+                    }
+                    else -> {
+                        setVerdict(verdictCard, verdictTitle, verdictSubtitle,
+                            "БЕЗОПАСНЫЙ СОСТАВ", "#3FB500", "#F1F8E9",
+                            "Найдено ${matchedItems.size} известных компонентов")
+                    }
                 }
+
 
                 recyclerView.adapter = ResultDetailAdapter(matchedItems.toMutableList())
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.benefind.checkapp.databinding.ActivityAdditiveDetailBinding
 import android.graphics.Color
+import android.view.View
 
 class AdditiveDetailActivity : AppCompatActivity() {
 
@@ -17,19 +18,23 @@ class AdditiveDetailActivity : AppCompatActivity() {
         val additive = intent.getSerializableExtra("EXTRA_ADDITIVE") as? Additive
 
         additive?.let {
-            binding.detailCode.text = it.code
-            binding.detailName.text = it.name
+            binding.detailCode.text = it.name
+
+            if (it.code.isNullOrEmpty()) {
+                binding.detailName.visibility = View.GONE
+            } else {
+                binding.detailName.visibility = View.VISIBLE
+                binding.detailName.text = it.code
+            }
+
             binding.detailStatus.text = "Статус: ${it.legality}"
 
-            if (it.legality == "Разрешен" || it.legality == "Безопасен") {
-                binding.detailStatus.setTextColor(Color.parseColor("#3fb500"))
+            val statusColor = when (it.legality) {
+                "Разрешен", "Безопасен" -> "#3fb500"
+                "Вреден" -> "#FF9800"
+                else -> "#d42c2c"
             }
-            else if (it.legality == "Вреден") {
-                binding.detailStatus.setTextColor(Color.parseColor("#FF9800"))
-            }
-            else {
-                binding.detailStatus.setTextColor(Color.parseColor("#d42c2c"))
-            }
+            binding.detailStatus.setTextColor(Color.parseColor(statusColor))
 
             binding.detailDescription.text = it.description
         }
