@@ -49,7 +49,7 @@
         android:fontFamily="@font/geologica_auto_medium"
         android:text="Сфотографируйте состав"
         android:textColor="#000000"
-        android:textSize="38sp"/>
+        android:textSize="35sp"/>
 
 
         <ImageView
@@ -116,6 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:textColor="@color/black"
+        android:visibility="gone"
         android:text="Распознанные ингредиенты:"
         android:textSize="23sp"
         android:fontFamily="@font/geologica_regular"/>
@@ -124,6 +125,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
         android:layout_weight="1"
         android:background="@drawable/blocks_container"
         android:padding="16dp">
