@@ -29,7 +29,7 @@
     android:layout_height="wrap_content"
     android:fontFamily="@font/geologica_regular"
     android:gravity="center"
-    android:text="Приложение создано для быстрой проверки состава продуктов и косметики на наличие вредных компонентов.\n\nБерегите своё здоровье!"
+    android:text="Приложение создано для быстрой проверки состава продуктов и косметики на наличие вредных компонентов и пищевых добавок.\n\nБерегите своё здоровье!"
     android:textColor="#333333"
     android:textSize="18sp"
     android:lineSpacingExtra="4dp" />

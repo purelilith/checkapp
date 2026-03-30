@@ -36,7 +36,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:fontFamily="@font/geologica_auto_medium"
-    android:text="Введи состав продукта:"
+    android:text="Введите состав продукта:"
     android:textColor="#000000"
     android:textSize="40sp" />
 
