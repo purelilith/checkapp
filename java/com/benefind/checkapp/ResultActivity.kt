@@ -32,13 +32,16 @@ class ResultActivity : AppCompatActivity() {
         val db = AppDatabase.getDatabase(this)
 
         lifecycleScope.launch {
-            // загрузка всех ингредиентов из БД
             val allIngredients = db.additiveDao().getAll()
 
-            // сверяю распознанное с ингредиентами из БД
             val matchedItems = allIngredients.filter { ingredient ->
-                val nameMatch = rawText.contains(ingredient.name.uppercase())
-                val codeMatch = ingredient.code?.let { rawText.contains(it.uppercase()) } ?: false
+                val nameMatch = ingredient.name.isNotEmpty() &&
+                        rawText.contains(ingredient.name.uppercase())
+
+                // 2. Проверяем код (только если он не null и не пустой)
+                val codeMatch = !ingredient.code.isNullOrBlank() &&
+                        rawText.contains(ingredient.code.uppercase())
+
                 nameMatch || codeMatch
             }
 
