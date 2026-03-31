@@ -23,10 +23,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="25dp"
+        android:paddingTop="20dp"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:paddingBottom="21dp">
+        android:paddingBottom="20dp">
 
         <ImageButton
             android:id="@+id/backButtonOCR"
@@ -54,9 +54,9 @@
 
         <ImageView
             android:id="@+id/cameraImage"
-            android:layout_width="match_parent"
+            android:layout_width="230dp"
             android:layout_gravity="center"
-            android:layout_height="151dp"
+            android:layout_height="280dp"
             android:background="@drawable/pic_photo">
 
         </ImageView>
@@ -72,13 +72,14 @@
                 android:id="@+id/captureImgBtn"
                 android:layout_width="150dp"
                 android:layout_height="70dp"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_gravity="center"
                 android:background="@drawable/btns_green"
                 android:fontFamily="@font/geologica_auto_medium"
-                android:text="Сделать фото"
+                android:text="Фото"
                 android:layout_weight="1"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:textSize="25sp"
                 app:backgroundTint="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -99,10 +100,11 @@
             android:layout_gravity="center"
             android:background="@drawable/btns_green"
             android:fontFamily="@font/geologica_auto_medium"
-            android:text="Выбрать из галереи"
+            android:text="Галерея"
+            android:foreground="?android:attr/selectableItemBackground"
             android:layout_weight="1"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="25sp"
             app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -149,6 +151,7 @@
         android:layout_marginTop="15dp"
         android:fontFamily="@font/geologica_auto_medium"
         android:text="Узнать результат"
+        android:foreground="?android:attr/selectableItemBackground"
         android:textSize="25sp"
         android:textColor="@color/white"
         android:background="@drawable/btns_blue"

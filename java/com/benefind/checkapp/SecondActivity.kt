@@ -14,8 +14,10 @@ class SecondActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
 
         val moreBtn = findViewById<ImageButton>(R.id.moreBtnSecond)
+        val finishButton = findViewById<ImageButton>(R.id.backButtonSecond)
         val button_to_main =
             findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.buttonToMain)
         val button_to_OCR =
@@ -34,6 +36,10 @@ class SecondActivity : AppCompatActivity() {
         button_to_hand.setOnClickListener {
             val intent = Intent(this, ManualInputActivity::class.java)
             startActivity(intent)
+        }
+        finishButton.setOnClickListener {
+            finishAffinity()
+
         }
 
         moreBtn.setOnClickListener { view ->

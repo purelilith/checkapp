@@ -40,6 +40,8 @@
     app:backgroundTint="@null"
     android:background="@drawable/btns_green"
     android:text="Понятно"
+    android:textSize="20sp"
+    android:foreground="?android:attr/selectableItemBackground"
     android:textColor="#FFFFFF"
     android:fontFamily="@font/geologica_auto_medium" />
 </LinearLayout>

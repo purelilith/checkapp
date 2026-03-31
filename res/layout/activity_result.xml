@@ -1,76 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#EAEAEA"
-    android:orientation="vertical"
-    android:padding="20dp">
-
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/ic_back_btn"
-        android:background="@drawable/btn_more_bg_selector"
-        android:scaleType="centerInside"
-        android:contentDescription="Back" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/verdictCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="0dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="24dp">
-
-
-            <TextView
-                android:id="@+id/verdictTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/geologica_auto_medium"
-                android:text="АНАЛИЗИРУЕМ..."
-                android:textColor="#000000"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/verdictSubtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0.7"
-                android:textColor="@color/black"
-                android:fontFamily="@font/geologica_regular"
-                android:text="Найдено 0 совпадений"
-                android:textSize="16sp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/geologica_regular"
-        android:layout_marginBottom="12dp"
-        android:text="Детальный разбор состава:"
-        android:textStyle="bold" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/resultRecyclerView"
+    android:fillViewport="true"
+    android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="20dp" />
+        android:background="#EAEAEA"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-</LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="20dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="20dp">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="70dp"
+                android:contentDescription="Back"
+                android:layout_height="70dp"
+                android:src="@drawable/ic_back_btn"
+                android:background="@drawable/btn_more_bg_selector"
+                android:scaleType="centerInside"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+            </ImageButton>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/verdictCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+
+                <TextView
+                    android:id="@+id/verdictTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/geologica_auto_medium"
+                    android:text="АНАЛИЗИРУЕМ..."
+                    android:textColor="#000000"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/verdictSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.7"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/geologica_regular"
+                    android:text="Найдено 0 совпадений"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/geologica_regular"
+            android:layout_marginBottom="12dp"
+            android:text="Детальный разбор состава:"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/resultRecyclerView"
+            android:nestedScrollingEnabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="20dp" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

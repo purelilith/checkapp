@@ -38,12 +38,13 @@
     android:id="@+id/closeAboutBtn"
     android:layout_width="match_parent"
     android:layout_height="60dp"
+    android:foreground="?android:attr/selectableItemBackground"
     android:layout_marginTop="30dp"
     app:backgroundTint="@null"
     android:background="@drawable/btns_green"
     android:text="Закрыть"
     android:textAllCaps="false"
     android:textColor="#FFFFFF"
-    android:textSize="18sp"
+    android:textSize="20sp"
     android:fontFamily="@font/geologica_auto_medium" />
 </LinearLayout>

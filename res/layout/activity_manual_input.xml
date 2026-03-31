@@ -66,6 +66,7 @@
     android:layout_width="match_parent"
     android:layout_height="65dp"
     android:layout_marginTop="20dp"
+    android:foreground="?android:attr/selectableItemBackground"
     android:textColor="@color/white"
     android:background="@drawable/btns_green"
     android:fontFamily="@font/geologica_auto_medium"
