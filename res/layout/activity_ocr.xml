@@ -51,7 +51,11 @@
         android:textColor="#000000"
         android:textSize="35sp"/>
 
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/cameraImage"
             android:layout_width="230dp"
@@ -60,58 +64,60 @@
             android:background="@drawable/pic_photo">
 
         </ImageView>
+        </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        android:weightSum="2">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <Button
-                android:id="@+id/captureImgBtn"
-                android:layout_width="150dp"
-                android:layout_height="70dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:layout_gravity="center"
-                android:background="@drawable/btns_green"
-                android:fontFamily="@font/geologica_auto_medium"
-                android:text="Фото"
-                android:layout_weight="1"
-                android:textColor="#FFFFFF"
-                android:textSize="25sp"
-                app:backgroundTint="@null"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-            </Button>
+                <Button
+                    android:id="@+id/captureImgBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/btns_green"
+                    android:fontFamily="@font/geologica_auto_medium"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:text="Фото"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    app:backgroundTint="@null"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:layout_width="15dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-        </View>
+                </Button>
 
-        <Button
-            android:id="@+id/engCaptureImgBtn"
-            android:layout_width="150dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:background="@drawable/btns_green"
-            android:fontFamily="@font/geologica_auto_medium"
-            android:text="Галерея"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:layout_weight="1"
-            android:textColor="#FFFFFF"
-            android:textSize="25sp"
-            app:backgroundTint="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-        </Button>
-    </LinearLayout>
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                </View>
+
+                <Button
+                    android:id="@+id/engCaptureImgBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/btns_green"
+                    android:fontFamily="@font/geologica_auto_medium"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:text="Галерея"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    app:backgroundTint="@null"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </Button>
+            </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"

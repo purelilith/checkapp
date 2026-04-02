@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -35,7 +38,7 @@
 <Button
     android:id="@+id/closeBtn"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:layout_marginTop="24dp"
     app:backgroundTint="@null"
     android:background="@drawable/btns_green"
@@ -45,3 +48,4 @@
     android:textColor="#FFFFFF"
     android:fontFamily="@font/geologica_auto_medium" />
 </LinearLayout>
+</androidx.core.widget.NestedScrollView>
