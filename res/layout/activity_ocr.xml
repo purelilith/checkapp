@@ -19,56 +19,56 @@
             android:padding="25dp"
             android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="20dp"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:paddingBottom="20dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="20dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="20dp">
 
-        <ImageButton
-            android:id="@+id/backButtonOCR"
-            android:layout_width="70dp"
-            android:contentDescription="Back"
-            android:layout_height="70dp"
-            android:src="@drawable/ic_back_btn"
-            android:background="@drawable/btn_more_bg_selector"
-            android:scaleType="centerInside"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-        </ImageButton>
+                <ImageButton
+                    android:id="@+id/backButtonOCR"
+                    android:layout_width="70dp"
+                    android:contentDescription="Back"
+                    android:layout_height="70dp"
+                    android:src="@drawable/ic_back_btn"
+                    android:background="@drawable/btn_more_bg_selector"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+                </ImageButton>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:fontFamily="@font/geologica_auto_medium"
-        android:text="Сфотографируйте состав"
-        android:textColor="#000000"
-        android:textSize="35sp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/cameraImage"
-            android:layout_width="230dp"
-            android:layout_gravity="center"
-            android:layout_height="280dp"
-            android:background="@drawable/pic_photo">
-
-        </ImageView>
-        </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/geologica_auto_medium"
+                android:text="Сфотографируйте состав"
+                android:textColor="#000000"
+                android:textSize="35sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/cameraImage"
+                    android:layout_width="230dp"
+                    android:layout_gravity="center"
+                    android:layout_height="280dp"
+                    android:background="@drawable/pic_photo">
+
+                </ImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
                 android:layout_marginTop="15dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
@@ -119,51 +119,51 @@
                 </Button>
             </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:textColor="@color/black"
-        android:visibility="gone"
-        android:text="Распознанные ингредиенты:"
-        android:textSize="23sp"
-        android:fontFamily="@font/geologica_regular"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                android:text="Распознанные ингредиенты:"
+                android:textSize="23sp"
+                android:fontFamily="@font/geologica_regular"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        android:layout_weight="1"
-        android:background="@drawable/blocks_container"
-        android:padding="16dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:layout_weight="1"
+                android:background="@drawable/blocks_container"
+                android:padding="16dp">
 
-        <EditText
-            android:id="@+id/resultText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:gravity="top"
-            android:textColor="@color/black"
-            android:fontFamily="@font/geologica_regular"
-            android:hint="Тут появится текст после сканирования..."
-            android:textSize="16sp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <EditText
+                    android:id="@+id/resultText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/geologica_regular"
+                    android:hint="Тут появится текст после сканирования..."
+                    android:textSize="16sp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/takeCharBtn"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_marginTop="15dp"
-        android:fontFamily="@font/geologica_auto_medium"
-        android:text="Узнать результат"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:textSize="25sp"
-        android:textColor="@color/white"
-        android:background="@drawable/btns_blue"
-        app:backgroundTint="@null">
+            <Button
+                android:id="@+id/takeCharBtn"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/geologica_auto_medium"
+                android:text="Узнать результат"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:textSize="25sp"
+                android:textColor="@color/white"
+                android:background="@drawable/btns_blue"
+                app:backgroundTint="@null">
 
-    </Button>
+            </Button>
         </LinearLayout>
     </ScrollView>
     <ProgressBar
