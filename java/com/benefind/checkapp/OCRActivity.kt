@@ -4,7 +4,10 @@ import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -62,23 +65,25 @@ class OCRActivity : AppCompatActivity() {
         // разрешение на камеру
         requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-                if (isGranted) captureImage() else Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+                if (isGranted) captureImage() else Toast.makeText(this, "Camera permission denied",
+                    Toast.LENGTH_SHORT).show()
             }
 
         // лаунчер для фото с камеры
         takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success) {
                 currentPhotoPath?.let { path ->
-                    val bitmap = BitmapFactory.decodeFile(path)
+                    val bitmap = decodeSampledBitmapFromFile(path, 1024, 1024)
                     processImage(bitmap)
                 }
             }
         }
 
+
         // лаунчер для выбора из галереи
         pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
-                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it)
+                val bitmap = decodeSampledBitmapFromUri(it, 1024, 1024)
                 processImage(bitmap)
             }
         }
@@ -106,7 +111,7 @@ class OCRActivity : AppCompatActivity() {
     }// основная функция распознавания через ML Kit
     private fun processImage(bitmap: Bitmap?) {
         if (bitmap == null) return
-
+        (cameraImage.drawable as? BitmapDrawable)?.bitmap?.recycle()
         cameraImage.setImageBitmap(bitmap)
         progressBar.visibility = View.VISIBLE
         resultText.isEnabled = false
@@ -141,6 +146,21 @@ class OCRActivity : AppCompatActivity() {
         }
     }
 
+    private fun getResizedBitmap(bitmap: Bitmap, maxSize: Int): Bitmap {
+        var width = bitmap.width
+        var height = bitmap.height
+
+        val bitmapRatio = width.toFloat() / height.toFloat()
+        if (bitmapRatio > 1) {
+            width = maxSize
+            height = (width / bitmapRatio).toInt()
+        } else {
+            height = maxSize
+            width = (height * bitmapRatio).toInt()
+        }
+        return Bitmap.createScaledBitmap(bitmap, width, height, true)
+    }
+
     private fun captureImage() {
         val photoFile: File? = try {
             createImageFile()
@@ -152,5 +172,45 @@ class OCRActivity : AppCompatActivity() {
             val photoUri: Uri = FileProvider.getUriForFile(this, "$packageName.provider", it)
             takePictureLauncher.launch(photoUri)
         }
+    }
+    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+        val (height: Int, width: Int) = options.outHeight to options.outWidth
+        var inSampleSize = 1
+        if (height > reqHeight || width > reqWidth) {
+            val halfHeight = height / 2
+            val halfWidth = width / 2
+            while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
+                inSampleSize *= 2
+            }
+        }
+        return inSampleSize
+    }
+
+    private fun decodeSampledBitmapFromFile(path: String, reqWidth: Int, reqHeight: Int): Bitmap {
+        val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        BitmapFactory.decodeFile(path, options)
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
+        options.inJustDecodeBounds = false
+        return BitmapFactory.decodeFile(path, options)
+    }
+
+    private fun decodeSampledBitmapFromUri(uri: Uri, reqWidth: Int, reqHeight: Int): Bitmap? {
+        return contentResolver.openInputStream(uri)?.use { input ->
+            val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            BitmapFactory.decodeStream(input, null, options)
+            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
+            options.inJustDecodeBounds = false
+            contentResolver.openInputStream(uri)?.use { finalInput ->
+                BitmapFactory.decodeStream(finalInput, null, options)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        recognizer.close()
+        // Очищаем ImageView и удаляем bitmap из памяти
+        (cameraImage.drawable as? BitmapDrawable)?.bitmap?.recycle()
+        cameraImage.setImageDrawable(null)
     }
 }
