@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#EAEAEA"
+    android:orientation="vertical"
+    android:padding="22dp"
+    tools:ignore="NamespaceTypo">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="25dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="21dp">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="70dp"
+            android:contentDescription="Back"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_back_btn"
+            android:background="@drawable/btn_more_bg_selector"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+        </ImageButton>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:fontFamily="@font/geologica_auto_medium"
+    android:text="Введите состав продукта:"
+    android:textColor="#000000"
+    android:textSize="40sp" />
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_marginTop="15dp"
+    android:layout_weight="1"
+    android:background="@drawable/blocks_btns_style"
+    android:padding="10dp">
+
+    <EditText
+        android:id="@+id/compositionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/geologica_auto_medium"
+        android:gravity="top"
+        android:hint="Например: Куркумин, Е102 (на английском), aqua, sodium laureth sulfate ..."
+        android:padding="10dp"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+<Button
+    android:id="@+id/analyzeButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:textColor="@color/white"
+    android:background="@drawable/btns_green"
+    android:fontFamily="@font/geologica_auto_medium"
+    android:text="Проверить состав"
+    android:textSize="23sp"
+    app:backgroundTint="@null"/>
+
+</LinearLayout>
